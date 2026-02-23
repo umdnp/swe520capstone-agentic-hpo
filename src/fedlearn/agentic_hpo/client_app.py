@@ -160,18 +160,21 @@ def train(message: Message, context: Context) -> Message:
     y_pred = model.predict(X_eval)
     acc = float(accuracy_score(y_eval, y_pred))
 
+    log_loss_failed = 0.0
     try:
         y_proba = model.predict_proba(X_eval)
-        loss = float(log_loss(y_eval, y_proba))
-    except Exception:
-        loss = 0.0
+        loss = float(log_loss(y_eval, y_proba, labels=model.classes_))
+    except ValueError:
+        loss = float("nan")
+        log_loss_failed = 1.0
 
     num_examples = float(len(X_train))
 
     metrics = MetricRecord({
-        "num-examples": num_examples,
-        "loss": loss,
         "accuracy": acc,
+        "loss": loss,
+        "log-loss-failed": log_loss_failed,
+        "num-examples": num_examples,
     })
 
     # extract updated model params

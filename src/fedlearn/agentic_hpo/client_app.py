@@ -129,6 +129,20 @@ def _get_train_eval_data(context: Context) -> tuple[pd.DataFrame, pd.Series, pd.
     return X_train, y_train, X_eval, y_eval
 
 
+def _init_model(message: Message, context: Context):
+    """
+    Build model and load incoming parameters.
+    """
+    incoming_arrays = message.content["arrays"]
+    penalty = context.run_config["penalty"]
+    local_epochs = context.run_config["local-epochs"]
+
+    # create model from run_config and load incoming flwr params
+    model = get_model(penalty=penalty, local_epochs=local_epochs)
+    set_model_params(model, incoming_arrays.to_numpy_ndarrays())
+    return model
+
+
 @app.train()
 def train(message: Message, context: Context) -> Message:
     """
@@ -142,16 +156,11 @@ def train(message: Message, context: Context) -> Message:
       5) Compute metrics on the local eval data.
       6) Return updated parameters and metrics to the server.
     """
-    incoming_arrays = message.content["arrays"]
-    penalty = context.run_config["penalty"]
-    local_epochs = context.run_config["local-epochs"]
-
-    # create model using shared run_config
-    model = get_model(penalty=penalty, local_epochs=local_epochs)
-    set_model_params(model, incoming_arrays.to_numpy_ndarrays())
-
     # load local train/eval data for this client
     X_train, y_train, X_eval, y_eval = _get_train_eval_data(context)
+
+    # initialize model from server message
+    model = _init_model(message, context)
 
     # local training
     model.fit(X_train, y_train)
@@ -201,16 +210,11 @@ def evaluate(message: Message, context: Context) -> Message:
     This uses the same partitioning logic and eval split as `train`,
     but does not perform any further training.
     """
-    incoming_arrays = message.content["arrays"]
-    penalty = context.run_config["penalty"]
-    local_epochs = context.run_config["local-epochs"]
-
-    # recreate model and load parameters
-    model = get_model(penalty=penalty, local_epochs=local_epochs)
-    set_model_params(model, incoming_arrays.to_numpy_ndarrays())
-
     # load local eval data
     _, _, X_eval, y_eval = _get_train_eval_data(context)
+
+    # initialize model from server message
+    model = _init_model(message, context)
 
     # compute metrics
     y_pred = model.predict(X_eval)

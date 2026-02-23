@@ -36,21 +36,21 @@ ANNOTATION_CONFIG: dict[str, dict[str, Any]] = {
     "ethnicity": {
         "categories": ["African American", "Asian", "Caucasian", "Hispanic", "Native American", "Other/Unknown"],
         "mapping": {
-            "african american": "african",
-            "asian": "asian",
-            "caucasian": "caucasian",
-            "hispanic": "hispanic",
-            "native american": "native",
-            "other/unknown": "unknown",
+            "african american": "African American",
+            "asian": "Asian",
+            "caucasian": "Caucasian",
+            "hispanic": "Hispanic",
+            "native american": "Native American",
+            "other/unknown": "Other/Unknown",
         },
     },
     "gender": {
         "categories": ["female", "male", "other", "unknown"],
         "mapping": {
-            "f": "f",
-            "female": "f",
-            "m": "m",
-            "male": "m",
+            "f": "female",
+            "female": "female",
+            "m": "male",
+            "male": "male",
             "nb": "other",
             "non-binary": "other",
             "other": "other",
@@ -60,10 +60,10 @@ ANNOTATION_CONFIG: dict[str, dict[str, Any]] = {
     "hospital_region": {
         "categories": ["Midwest", "Northeast", "South", "West"],
         "mapping": {
-            "midwest": "midwest",
-            "northeast": "northeast",
-            "south": "south",
-            "west": "west",
+            "midwest": "Midwest",
+            "northeast": "Northeast",
+            "south": "South",
+            "west": "West",
         },
     },
     "hospitaladmitsource": {
@@ -71,25 +71,25 @@ ANNOTATION_CONFIG: dict[str, dict[str, Any]] = {
                        "ICU", "ICU to SDU", "Observation", "Operating Room", "Other Hospital", "Other ICU", "PACU",
                        "Recovery Room", "Step-Down Unit (SDU)", "Other"],
         "mapping": {
-            "acute care/floor": "acute_care",
-            "chest pain center": "cp_center",
-            "direct admit": "direct",
-            "emergency department": "emergency",
-            "floor": "floor",
-            "icu": "icu",
-            "icu to sdu": "icu_sdu",
-            "observation": "observation",
-            "operating room": "operating",
-            "other hospital": "other_hospital",
-            "other icu": "other_icu",
-            "pacu": "pacu",
-            "recovery room": "recovery",
-            "step-down unit (sdu)": "sdu",
-            "Other": "other",
+            "acute care/floor": "Acute Care/Floor",
+            "chest pain center": "Chest Pain Center",
+            "direct admit": "Direct Admit",
+            "emergency department": "Emergency Department",
+            "floor": "Floor",
+            "icu": "ICU",
+            "icu to sdu": "ICU to SDU",
+            "observation": "Observation",
+            "operating room": "Operating Room",
+            "other hospital": "Other Hospital",
+            "other icu": "Other ICU",
+            "pacu": "PACU",
+            "recovery room": "Recovery Room",
+            "step-down unit (sdu)": "Step-Down Unit (SDU)",
+            "Other": "Other",
         },
     },
     "numbedscategory": {
-        "categories": ["<100", "100 - 249", "250 - 499", ">= 500"],
+        "categories": ["low", "lowmid", "highmid", "high"],
         "mapping": {
             "<100": "low",
             "100 - 249": "lowmid",
@@ -98,7 +98,7 @@ ANNOTATION_CONFIG: dict[str, dict[str, Any]] = {
         },
     },
     "teachingstatus": {
-        "categories": ["true", "false"],
+        "categories": ["1", "0"],
         "mapping": {
             "true": "1",
             "false": "0",
@@ -109,34 +109,34 @@ ANNOTATION_CONFIG: dict[str, dict[str, Any]] = {
                        "ICU", "ICU to SDU", "Observation", "Operating Room", "Other Hospital", "Other ICU", "PACU",
                        "Recovery Room", "Step-Down Unit (SDU)", "Other"],
         "mapping": {
-            "acute care/floor": "acute_care",
-            "chest pain center": "cp_center",
-            "direct admit": "direct",
-            "emergency department": "emergency",
-            "floor": "floor",
-            "icu": "icu",
-            "icu to sdu": "icu_sdu",
-            "observation": "observation",
-            "operating room": "operating",
-            "other hospital": "other_hospital",
-            "other icu": "other_icu",
-            "pacu": "pacu",
-            "recovery room": "recovery",
-            "step-down unit (sdu)": "sdu",
-            "Other": "other",
+            "acute care/floor": "Acute Care/Floor",
+            "chest pain center": "Chest Pain Center",
+            "direct admit": "Direct Admit",
+            "emergency department": "Emergency Department",
+            "floor": "Floor",
+            "icu": "ICU",
+            "icu to sdu": "ICU to SDU",
+            "observation": "Observation",
+            "operating room": "Operating Room",
+            "other hospital": "Other Hospital",
+            "other icu": "Other ICU",
+            "pacu": "PACU",
+            "recovery room": "Recovery Room",
+            "step-down unit (sdu)": "Step-Down Unit (SDU)",
+            "Other": "Other",
         },
     },
     "unittype": {
         "categories": ["Cardiac ICU", "CCU-CTICU", "CTICU", "CSICU", "Med-Surg ICU", "MICU", "Neuro ICU", "SICU"],
         "mapping": {
-            "cardiac icu": "cardiac",
-            "ccu-cticu": "ccu",
-            "cticu": "cticu",
-            "csicu": "csicu",
-            "med-surg icu": "surgery",
-            "micu": "micu",
-            "neuro icu": "neuro",
-            "sicu": "sicu",
+            "cardiac icu": "Cardiac ICU",
+            "ccu-cticu": "CCU-CTICU",
+            "cticu": "CTICU",
+            "csicu": "CSICU",
+            "med-surg icu": "Med-Surg ICU",
+            "micu": "MICU",
+            "neuro icu": "Neuro ICU",
+            "sicu": "SICU",
         },
     },
 }
@@ -174,8 +174,8 @@ def annotate_categorical_columns(df: pd.DataFrame) -> pd.DataFrame:
 
         # determine fallback category
         fallback = (
-            "unknown" if "Unknown" or "unknown" in categories else
-            "other" if "Other" or "other" in categories else
+            "unknown" if ("Unknown" in categories or "unknown" in categories) else
+            "other" if ("Other" in categories or "other" in categories) else
             (categories[-1] if categories else "unknown")
         )
 
@@ -188,5 +188,9 @@ def annotate_categorical_columns(df: pd.DataFrame) -> pd.DataFrame:
             return mapping.get(raw_norm, fallback)
 
         df[col] = normalized.map(map_value).astype("category")
+
+        invalid = set(df[col].dropna().unique()) - set(categories)
+        if invalid:
+            raise RuntimeError(f"{col} produced values not in categories: {sorted(invalid)}")
 
     return df

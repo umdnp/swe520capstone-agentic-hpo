@@ -25,7 +25,7 @@ MODEL_PATH = CONFIG_DIR / "federated_sgd.pkl"
 
 @app.main()
 def main(grid: Grid, context: Context) -> None:
-    # make sure configs dir exists
+    # make sure "configs" dir exists
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 
     # read run config from pyproject.toml or cli

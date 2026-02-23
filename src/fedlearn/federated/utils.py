@@ -115,7 +115,7 @@ def set_initial_params(pipeline: Pipeline) -> None:
     clf.classes_ = CLASSES
 
     if n_classes <= 2:
-        # binary case: SGDClassifier stores coef_ as (n_features,)
+        # binary case: SGDClassifier stores coef_ as (1, n_features)
         # and intercept_ as a single bias term of shape (1,)
         clf.coef_ = np.zeros((1, N_FEATURES), dtype=np.float64)
 

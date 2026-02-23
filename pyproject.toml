@@ -32,8 +32,8 @@ num-server-rounds = 3
 local-epochs = 3
 penalty = "l2"
 class-weight = "none"
-sgd-learning-rate = "constant"
-sgd-eta0 = 0.001
+sgd-learning-rate = "optimal"
+#sgd-eta0 = 0.001 # only useful when learning-rate=constant|adaptive
 
 # server_app settings
 fraction-train = 1.0

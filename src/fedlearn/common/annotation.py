@@ -159,6 +159,17 @@ def _normalize_raw_value(val: Any) -> str | None:
     return str(val).strip().lower() or None
 
 
+def _choose_fallback(categories: list[str]) -> str:
+    """
+    Pick a fallback label that matches one of the configured categories.
+    Preference: unknown -> other -> last category.
+    """
+    for candidate in ("unknown", "Unknown", "other", "Other"):
+        if candidate in categories:
+            return candidate
+    return categories[-1] if categories else "unknown"
+
+
 def annotate_categorical_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
     Apply annotation rules to known categorical columns.
@@ -173,11 +184,7 @@ def annotate_categorical_columns(df: pd.DataFrame) -> pd.DataFrame:
         mapping = cfg["mapping"]
 
         # determine fallback category
-        fallback = (
-            "unknown" if ("Unknown" in categories or "unknown" in categories) else
-            "other" if ("Other" in categories or "other" in categories) else
-            (categories[-1] if categories else "unknown")
-        )
+        fallback = _choose_fallback(categories)
 
         # normalize raw values
         normalized = df[col].map(_normalize_raw_value)

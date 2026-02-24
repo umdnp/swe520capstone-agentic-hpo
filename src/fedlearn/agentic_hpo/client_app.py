@@ -9,6 +9,7 @@ from flwr.app import Context
 from flwr.clientapp import ClientApp
 from flwr.common import Message, RecordDict, ArrayRecord, MetricRecord
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
 
 from fedlearn.common.annotation import annotate_categorical_columns
 from fedlearn.common.config import HParams
@@ -85,6 +86,7 @@ def _load_client_data(context: Context) -> pd.DataFrame:
 
         where_sql = " OR ".join(where_clauses) if where_clauses else "TRUE"
 
+        # noinspection SqlNoDataSourceInspection
         query = f"SELECT * FROM {VIEW_NAME} WHERE {where_sql} ORDER BY patientunitstayid"
 
         df = conn.execute(query, params).df()
@@ -129,12 +131,14 @@ def _get_train_eval_data(context: Context) -> tuple[pd.DataFrame, pd.Series, pd.
     return X_train, y_train, X_eval, y_eval
 
 
-def _init_model(message: Message, context: Context):
+def _init_model(message: Message, context: Context, hp: HParams | None = None) -> Pipeline:
     """
     Build model and load incoming model params.
     """
     incoming_arrays = message.content["arrays"]
-    hp = HParams.from_message(message, context)
+
+    if hp is None:
+        hp = HParams.from_message(message, context)
 
     model = get_model(hp)
     set_model_params(model, incoming_arrays.to_numpy_ndarrays())
@@ -161,9 +165,13 @@ def train(message: Message, context: Context) -> Message:
     hp = HParams.from_message(message, context)
     print(f"[Client] Hyperparams this round: {hp}")
 
+    model = _init_model(message, context, hp)
+    pre = model.named_steps["preprocessor"]
+    clf = model.named_steps["classifier"]
+
     # local training
-    model = _init_model(message, context)
-    model.fit(X_train, y_train)  # uses max_iter=local_epochs
+    X_proc = pre.transform(X_train)
+    clf.fit(X_proc, y_train)  # uses max_iter=local_epochs
 
     # compute metrics on train split
     metrics_dict = compute_binary_metrics(model, X_train, y_train)

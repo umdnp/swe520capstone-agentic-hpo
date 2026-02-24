@@ -11,14 +11,9 @@ from flwr.serverapp.strategy import FedAvg, Result, Strategy
 from fedlearn.common.config import HParams, ServerSettings, get_server_settings
 from fedlearn.common.model import get_model, get_model_params, set_initial_params
 
+# Constants
 
-def _make_model_shell(hp: HParams):
-    """
-    Create initialized model shell for loading final params.
-    """
-    model = get_model(hp)
-    set_initial_params(model)
-    return model
+OPTUNA_SEED = 42
 
 
 def _run_fl(
@@ -29,20 +24,22 @@ def _run_fl(
         settings: ServerSettings,
         train_cfg: ConfigRecord | None = None,
         eval_cfg: ConfigRecord | None = None,
-) -> Result:
+) -> tuple[Result, object]:
     """
     Run one FL execution with freshly initialized model parameters.
     """
-    model = _make_model_shell(hp)
+    model = get_model(hp)
+    set_initial_params(model)
     arrays = ArrayRecord(get_model_params(model))
 
-    return strategy.start(
+    result = strategy.start(
         grid=grid,
         initial_arrays=arrays,
         train_config=train_cfg,
         evaluate_config=eval_cfg,
         num_rounds=settings.num_rounds,
     )
+    return result, model
 
 
 class ExperimentRunner(Protocol):
@@ -61,8 +58,7 @@ class BaselineRunner:
         )
 
         # baseline clients use run_config (no config record sent)
-        result = _run_fl(strategy=strategy, grid=grid, hp=base_hp, settings=settings)
-        return result, _make_model_shell(base_hp)
+        return _run_fl(strategy=strategy, grid=grid, hp=base_hp, settings=settings)
 
 
 class StaticHPORunner:
@@ -129,7 +125,7 @@ class StaticHPORunner:
                 fraction_evaluate=settings.fraction_evaluate,
             )
 
-            result = _run_fl(
+            result, _ = _run_fl(
                 strategy=trial_strategy,
                 grid=grid,
                 hp=hp_trial,
@@ -141,7 +137,7 @@ class StaticHPORunner:
 
         study = optuna.create_study(
             direction=direction,
-            sampler=optuna.samplers.TPESampler(seed=42),
+            sampler=optuna.samplers.TPESampler(seed=OPTUNA_SEED),
         )
         study.optimize(objective, n_trials=n_trials)
 
@@ -158,7 +154,7 @@ class StaticHPORunner:
         )
 
         # full run using best static config
-        result = _run_fl(
+        return _run_fl(
             strategy=final_strategy,
             grid=grid,
             hp=best_hp,
@@ -166,8 +162,6 @@ class StaticHPORunner:
             train_cfg=best_cfg,
             eval_cfg=best_cfg,
         )
-
-        return result, _make_model_shell(best_hp)
 
 
 class AgenticFedAvg(FedAvg):
@@ -215,7 +209,7 @@ class AgenticHPORunner:
             fraction_evaluate=settings.fraction_evaluate,
         )
 
-        result = _run_fl(
+        return _run_fl(
             strategy=strategy,
             grid=grid,
             hp=seed_hp,
@@ -223,5 +217,3 @@ class AgenticHPORunner:
             train_cfg=seed_cfg,  # initial seed sent
             eval_cfg=seed_cfg,
         )
-
-        return result, _make_model_shell(seed_hp)

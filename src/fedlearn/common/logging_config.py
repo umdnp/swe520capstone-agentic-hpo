@@ -6,7 +6,10 @@ LOGGING = {
 
     "formatters": {
         "fedlearn": {
-            "format": "%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+            "()": "colorlog.ColoredFormatter",
+            "format": (
+                "%(blue)s%(asctime)s%(reset)s | %(levelname)s | %(name)s | %(message)s"
+            ),
         },
         "plain": {
             "format": "%(levelname)s : %(message)s",

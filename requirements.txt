@@ -1,4 +1,5 @@
 duckdb==1.4.4
+colorlog==6.10.1
 flwr[simulation]==1.26.1
 mypy==1.19.1
 numpy==2.4.2

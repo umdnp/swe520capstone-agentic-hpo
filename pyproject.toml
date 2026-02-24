@@ -24,7 +24,7 @@ clientapp = "fedlearn.agentic_hpo.client_app:app"
 serverapp = "fedlearn.agentic_hpo.server_app:app"
 
 [tool.flwr.app.config]
-# baseline | static_hpo | agent_hpo
+# baseline | static_hpo | agentic_hpo
 experiment = "baseline"
 
 # shared settings

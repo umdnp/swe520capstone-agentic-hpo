@@ -8,11 +8,12 @@ import pandas as pd
 from flwr.app import Context
 from flwr.clientapp import ClientApp
 from flwr.common import Message, RecordDict, ArrayRecord, MetricRecord
-from sklearn.metrics import accuracy_score, log_loss, roc_auc_score
 from sklearn.model_selection import train_test_split
 
 from fedlearn.common.annotation import annotate_categorical_columns
-from fedlearn.federated.utils import get_model, set_model_params, get_preprocessor_feature_names, get_model_params
+from fedlearn.common.config import HParams
+from fedlearn.common.metrics import compute_binary_metrics
+from fedlearn.common.model import get_model, set_model_params, get_input_feature_names, get_model_params
 
 app = ClientApp()
 
@@ -23,7 +24,6 @@ DUCKDB_PATH = PROJECT_ROOT / "data" / "duckdb" / "fedlearn.duckdb"
 VIEW_NAME = "v_features_icu_stay_clean"
 
 TARGET_COL = "prolonged_stay"
-DROP_COLS = ["patientunitstayid", "los_days", "prolonged_stay", "apacheadmissiondx"]
 REGION_COL = "hospital_region"
 
 CLIENT_REGION_MAP = {
@@ -112,7 +112,7 @@ def _get_train_eval_data(context: Context) -> tuple[pd.DataFrame, pd.Series, pd.
     y = df[TARGET_COL]
 
     # Use exactly the columns the preprocessor expects, in the same order
-    feat_cols = get_preprocessor_feature_names()
+    feat_cols = get_input_feature_names()
     missing = [c for c in feat_cols if c not in df.columns]
 
     if missing:
@@ -131,56 +131,15 @@ def _get_train_eval_data(context: Context) -> tuple[pd.DataFrame, pd.Series, pd.
 
 def _init_model(message: Message, context: Context):
     """
-    Build model and load incoming parameters.
+    Build model and load incoming model params.
     """
     incoming_arrays = message.content["arrays"]
-    local_epochs = context.run_config["local-epochs"]
-    penalty = context.run_config["penalty"]
-    class_weight_cfg = str(context.run_config.get("class-weight", "none")).lower()
-    class_weight = "balanced" if class_weight_cfg == "balanced" else None
-    sgd_learning_rate = str(context.run_config.get("sgd-learning-rate", "optimal"))
-    sgd_eta0 = float(context.run_config.get("sgd-eta0", 0.0))
+    hp = HParams.from_message(message, context)
 
-    # create model from run_config and load incoming flwr params
-    model = get_model(
-        penalty=penalty,
-        local_epochs=local_epochs,
-        class_weight=class_weight,
-        sgd_learning_rate=sgd_learning_rate,
-        sgd_eta0=sgd_eta0,
-    )
+    model = get_model(hp)
     set_model_params(model, incoming_arrays.to_numpy_ndarrays())
+
     return model
-
-
-def _compute_roc_auc(y_true, model, X) -> tuple[float, float]:
-    """
-    Compute ROC-AUC safely for binary classification.
-
-    Returns:
-        (roc_auc, failed_flag). If the score cannot be computed, a fallback value of (0.5, 1.0) is returned.
-    """
-    # AUC requires both classes
-    if len(np.unique(y_true)) < 2:
-        return 0.5, 1.0
-
-    # try probability scores first
-    if hasattr(model, "predict_proba"):
-        try:
-            y_score = model.predict_proba(X)[:, 1]
-            return float(roc_auc_score(y_true, y_score)), 0.0
-        except ValueError:
-            pass
-
-    # fallback to decision scores
-    if hasattr(model, "decision_function"):
-        try:
-            y_score = model.decision_function(X)
-            return float(roc_auc_score(y_true, y_score)), 0.0
-        except ValueError:
-            pass
-
-    return 0.5, 1.0
 
 
 @app.train()
@@ -192,49 +151,28 @@ def train(message: Message, context: Context) -> Message:
       1) Load this client's local train/eval data.
       2) Load global model parameters from the server.
       3) Initialize the local model with those parameters.
-      4) Train for `local-epochs` on the local training data.
+      4) Train for 'local-epochs' on the local training data.
       5) Compute metrics on the local training data.
       6) Return updated parameters and metrics to the server.
     """
-    # load local train/eval data for this client
+    # load local train data (i.e. for this region)
     X_train, y_train, _, _ = _get_train_eval_data(context)
 
-    # initialize model from server message
-    model = _init_model(message, context)
+    hp = HParams.from_message(message, context)
+    print(f"[Client] Hyperparams this round: {hp}")
 
     # local training
-    model.fit(X_train, y_train)
+    model = _init_model(message, context)
+    model.fit(X_train, y_train)  # uses max_iter=local_epochs
 
     # compute metrics on train split
-    y_pred = model.predict(X_train)
-    acc = float(accuracy_score(y_train, y_pred))
-
-    log_loss_failed = 0.0
-    try:
-        y_proba = model.predict_proba(X_train)
-        loss = float(log_loss(y_train, y_proba, labels=model.classes_))
-    except ValueError:
-        loss = float("nan")
-        log_loss_failed = 1.0
-
+    metrics_dict = compute_binary_metrics(model, X_train, y_train)
     num_examples = float(len(X_train))
-    roc_auc, roc_auc_failed = _compute_roc_auc(y_train, model, X_train)
-
-    metrics = MetricRecord({
-        "accuracy": acc,
-        "loss": loss,
-        "roc_auc": roc_auc,
-        "log-loss-failed": log_loss_failed,
-        "roc-auc-failed": roc_auc_failed,
-        "num-examples": num_examples,
-    })
-
-    # extract updated model params
-    updated_arrays = ArrayRecord(get_model_params(model))
+    metrics_dict["num-examples"] = num_examples
 
     reply_content = RecordDict({
-        "arrays": updated_arrays,
-        "metrics": metrics,
+        "arrays": ArrayRecord(get_model_params(model)),
+        "metrics": MetricRecord(metrics_dict),
     })
 
     reply_message = Message(
@@ -256,35 +194,15 @@ def evaluate(message: Message, context: Context) -> Message:
     # load local eval data
     _, _, X_eval, y_eval = _get_train_eval_data(context)
 
-    # initialize model from server message
     model = _init_model(message, context)
 
-    # compute metrics
-    y_pred = model.predict(X_eval)
-    acc = float(accuracy_score(y_eval, y_pred))
-
-    log_loss_failed = 0.0
-    try:
-        y_proba = model.predict_proba(X_eval)
-        loss = float(log_loss(y_eval, y_proba, labels=model.classes_))
-    except ValueError:
-        loss = float("nan")
-        log_loss_failed = 1.0
-
+    # compute metrics on eval split
+    metrics_dict = compute_binary_metrics(model, X_eval, y_eval)
     num_examples = float(len(X_eval))
-    roc_auc, roc_auc_failed = _compute_roc_auc(y_eval, model, X_eval)
-
-    metrics = MetricRecord({
-        "accuracy": acc,
-        "loss": loss,
-        "roc_auc": roc_auc,
-        "log-loss-failed": log_loss_failed,
-        "roc-auc-failed": roc_auc_failed,
-        "num-examples": num_examples,
-    })
+    metrics_dict["num-examples"] = num_examples
 
     reply_content = RecordDict({
-        "metrics": metrics,
+        "metrics": MetricRecord(metrics_dict),
     })
 
     return Message(

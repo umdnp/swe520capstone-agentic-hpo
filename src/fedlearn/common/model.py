@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import joblib
 import numpy as np
@@ -9,6 +10,8 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
+
+from fedlearn.common.config import HParams
 
 # Constants
 
@@ -33,7 +36,7 @@ def _load_preprocessor():
     return joblib.load(PREPROC_PATH)
 
 
-def get_preprocessor_feature_names() -> np.ndarray:
+def get_input_feature_names() -> np.ndarray:
     """
     Return the feature column names in order that the preprocessor expects.
     """
@@ -65,39 +68,29 @@ def get_preprocessor_feature_names() -> np.ndarray:
 
     return np.array(feature_names, dtype=object)
 
-def get_model(
-        penalty: str,
-        local_epochs: int,
-        class_weight=None,
-        sgd_learning_rate: str = "optimal",
-        sgd_eta0: float = 0.0,
-) -> Pipeline:
+
+def get_model(hp: HParams) -> Pipeline:
     """
     Create the global sklearn model to be trained federatedly.
-
-    Args:
-        penalty: Regularization type for SGDClassifier ("l2", "l1", "elasticnet", or "none").
-        local_epochs: Number of passes over the LOCAL data per round (max_iter).
-        class_weight: Class weight strategy for SGDClassifier ("balanced" or None).
-        sgd_learning_rate: Learning-rate schedule ("optimal", "constant", "adaptive").
-        sgd_eta0: Initial learning rate (used when schedule is constant or adaptive).
-
-    Returns:
-        A Pipeline(preprocessor -> SGDClassifier).
     """
-    args = dict(
+    args: dict[str, Any] = dict(
         loss="log_loss",
-        penalty=penalty,
-        max_iter=local_epochs,  # how many epochs each client runs per round
+        penalty=hp.penalty,
+        max_iter=hp.local_epochs,  # how many epochs each client runs per round
         tol=None,
-        learning_rate=sgd_learning_rate,
-        class_weight=class_weight,
+        class_weight=hp.class_weight,
+        learning_rate=hp.sgd_learning_rate,
         n_jobs=-1,
         random_state=42,
+        warm_start=True,
     )
 
-    if sgd_eta0 is not None and float(sgd_eta0) > 0.0:
-        args["eta0"] = float(sgd_eta0)
+    # eta0 is only valid/used for certain schedules and must be > 0
+    if hp.sgd_learning_rate in ("constant", "adaptive"):
+        eta0 = hp.sgd_eta0_cfg
+        if eta0 <= 0.0:
+            raise ValueError(f"sgd-eta0 must be > 0 for {hp.sgd_learning_rate}, got {eta0}")
+        args["eta0"] = eta0
 
     model = SGDClassifier(**args)
     model.classes_ = CLASSES
@@ -168,6 +161,7 @@ def set_model_params(pipeline: Pipeline, params: list[np.ndarray]) -> None:
     Args:
         pipeline: The Pipeline whose classifier will be modified.
         params: [coef, intercept] as NumPy arrays.
+        :rtype: None
     """
     clf: SGDClassifier = pipeline.named_steps["classifier"]
     coef, intercept = params

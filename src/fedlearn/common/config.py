@@ -88,14 +88,3 @@ def get_server_settings(context: Context) -> ServerSettings:
         fraction_train=float(context.run_config.get("fraction-train", 1.0)),
         fraction_evaluate=float(context.run_config.get("fraction-evaluate", 1.0)),
     )
-
-
-def resolve_config(message: Message, context: Context) -> ConfigRecord | None:
-    rd = message.content
-    cfg = rd.get("config")
-
-    if cfg is not None:
-        return cfg
-
-    # no server config sent; fall back to run_config
-    return ConfigRecord(dict(context.run_config))

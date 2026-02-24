@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from fedlearn.common.logging_config import setup_logging
 
 setup_logging()

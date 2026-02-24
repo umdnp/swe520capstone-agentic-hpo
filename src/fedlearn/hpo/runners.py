@@ -12,6 +12,7 @@ from sklearn.pipeline import Pipeline
 
 from fedlearn.common.config import HParams, ServerSettings, get_server_settings
 from fedlearn.common.model import get_model, get_model_params, set_initial_params
+from fedlearn.hpo.agents import AgenticHPOController, AgenticFedAvg
 
 logger = logging.getLogger(__name__)
 
@@ -168,47 +169,21 @@ class StaticHPORunner:
         )
 
 
-class AgenticFedAvg(FedAvg):
-    """
-    TODO: simple impl for now
-    """
-
-    def __init__(self, *, seed_hp: HParams, **kwargs):
-        super().__init__(**kwargs)
-        self.seed_hp = seed_hp
-
-    def configure_train(self, server_round, arrays, config, grid):
-        hp = self.seed_hp
-
-        # sample heuristic schedule; swap this with an agent/controller later
-        if server_round == 1:
-            hp = HParams(
-                local_epochs=1,
-                penalty=hp.penalty,
-                class_weight_cfg=hp.class_weight_cfg,
-                sgd_learning_rate=hp.sgd_learning_rate,
-                sgd_eta0_cfg=hp.sgd_eta0_cfg,
-            )
-        elif server_round == 2:
-            hp = HParams(
-                local_epochs=2,
-                penalty=hp.penalty,
-                class_weight_cfg=hp.class_weight_cfg,
-                sgd_learning_rate=hp.sgd_learning_rate,
-                sgd_eta0_cfg=hp.sgd_eta0_cfg,
-            )
-
-        return super().configure_train(server_round, arrays, hp.to_config(), grid)
-
-
 class AgenticHPORunner:
     def run(self, grid: Grid, context: Context) -> tuple[Result, Pipeline]:
         settings = get_server_settings(context)
         seed_hp = HParams.from_run_config(context)
         seed_cfg = seed_hp.to_config()
 
+        rc = context.run_config
+        model = str(rc.get("agent-model", "gpt-5.2"))
+        temperature = float(rc.get("agent-temperature", 0.2))
+
+        controller = AgenticHPOController(model=model, temperature=temperature)
+
         strategy = AgenticFedAvg(
             seed_hp=seed_hp,
+            controller=controller,
             fraction_train=settings.fraction_train,
             fraction_evaluate=settings.fraction_evaluate,
         )

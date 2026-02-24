@@ -8,4 +8,5 @@ openai==2.23.0
 optuna==4.7.0
 pandas==3.0.1
 pandas-stubs==3.0.0.260204
+python-dotenv==1.2.1
 scikit-learn==1.8.0

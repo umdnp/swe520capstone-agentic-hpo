@@ -161,7 +161,6 @@ def set_model_params(pipeline: Pipeline, params: list[np.ndarray]) -> None:
     Args:
         pipeline: The Pipeline whose classifier will be modified.
         params: [coef, intercept] as NumPy arrays.
-        :rtype: None
     """
     clf: SGDClassifier = pipeline.named_steps["classifier"]
     coef, intercept = params

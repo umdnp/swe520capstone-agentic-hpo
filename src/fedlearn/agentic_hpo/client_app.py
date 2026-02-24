@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import duckdb
@@ -17,6 +18,8 @@ from fedlearn.common.metrics import compute_binary_metrics
 from fedlearn.common.model import get_model, set_model_params, get_input_feature_names, get_model_params
 
 app = ClientApp()
+
+logger = logging.getLogger(__name__)
 
 # Constants
 
@@ -163,7 +166,7 @@ def train(message: Message, context: Context) -> Message:
     X_train, y_train, _, _ = _get_train_eval_data(context)
 
     hp = HParams.from_message(message, context)
-    print(f"[Client] Hyperparams this round: {hp}")
+    logger.info(f"[Client] Hyperparams this round: {hp}")
 
     model = _init_model(message, context, hp)
     pre = model.named_steps["preprocessor"]

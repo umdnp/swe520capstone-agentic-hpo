@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import Protocol
 
 import optuna
@@ -7,9 +8,12 @@ from flwr.app import Context, ArrayRecord
 from flwr.common import ConfigRecord
 from flwr.serverapp import Grid
 from flwr.serverapp.strategy import FedAvg, Result, Strategy
+from sklearn.pipeline import Pipeline
 
 from fedlearn.common.config import HParams, ServerSettings, get_server_settings
 from fedlearn.common.model import get_model, get_model_params, set_initial_params
+
+logger = logging.getLogger(__name__)
 
 # Constants
 
@@ -24,7 +28,7 @@ def _run_fl(
         settings: ServerSettings,
         train_cfg: ConfigRecord | None = None,
         eval_cfg: ConfigRecord | None = None,
-) -> tuple[Result, object]:
+) -> tuple[Result, Pipeline]:
     """
     Run one FL execution with freshly initialized model parameters.
     """
@@ -43,12 +47,12 @@ def _run_fl(
 
 
 class ExperimentRunner(Protocol):
-    def run(self, grid: Grid, context: Context) -> tuple[Result, object]:
+    def run(self, grid: Grid, context: Context) -> tuple[Result, Pipeline]:
         ...
 
 
 class BaselineRunner:
-    def run(self, grid: Grid, context: Context) -> tuple[Result, object]:
+    def run(self, grid: Grid, context: Context) -> tuple[Result, Pipeline]:
         settings = get_server_settings(context)
         base_hp = HParams.from_run_config(context)
 
@@ -100,7 +104,7 @@ class StaticHPORunner:
             sgd_eta0_cfg=eta0,
         )
 
-    def run(self, grid: Grid, context: Context) -> tuple[Result, object]:
+    def run(self, grid: Grid, context: Context) -> tuple[Result, Pipeline]:
         settings = get_server_settings(context)
         base_hp = HParams.from_run_config(context)
 
@@ -144,7 +148,7 @@ class StaticHPORunner:
         # rebuild the best_hp from best_params
         best_hp = self._suggest_hparams(optuna.trial.FixedTrial(study.best_params), base_hp)
 
-        print(f"[static_hpo] best_value={study.best_value} best_params={study.best_params}")
+        logger.info(f"[static_hpo] best_value={study.best_value}, best_params={study.best_params}")
 
         best_cfg = best_hp.to_config()
 
@@ -198,7 +202,7 @@ class AgenticFedAvg(FedAvg):
 
 
 class AgenticHPORunner:
-    def run(self, grid: Grid, context: Context) -> tuple[Result, object]:
+    def run(self, grid: Grid, context: Context) -> tuple[Result, Pipeline]:
         settings = get_server_settings(context)
         seed_hp = HParams.from_run_config(context)
         seed_cfg = seed_hp.to_config()

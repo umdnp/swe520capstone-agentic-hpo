@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import joblib
@@ -11,11 +12,12 @@ from fedlearn.common.model import set_model_params
 
 app = ServerApp()
 
+logger = logging.getLogger(__name__)
+
 # Constants
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 CONFIG_DIR = PROJECT_ROOT / "configs"
-MODEL_PATH = CONFIG_DIR / "federated_sgd.pkl"
 
 RUNNERS: dict[str, ExperimentRunner] = {
     "baseline": BaselineRunner(),
@@ -41,5 +43,6 @@ def main(grid: Grid, context: Context) -> None:
     final_params = result.arrays.to_numpy_ndarrays()
     set_model_params(model, final_params)
 
-    print(f"Saving final model to {MODEL_PATH}")
-    joblib.dump(model, MODEL_PATH)
+    save_file = CONFIG_DIR / f"{experiment}.pkl"
+    logger.info(f"Saving final model to {save_file}")
+    joblib.dump(model, save_file)

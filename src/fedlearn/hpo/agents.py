@@ -69,8 +69,11 @@ class AgenticHPOController:
     _exploit_by_round: dict[int, int] = field(init=False, default_factory=dict)
 
     def __post_init__(self) -> None:
-        # If no key is configured, allow FL to run (seed-only behavior).
+        # if no key configured, allow FL to run (seed-only behavior)
         self._enabled = bool(os.environ.get("OPENAI_API_KEY", "").strip())
+
+        logger.info("Agent enabled: %s", self._enabled)
+
         if not self._enabled:
             return
 

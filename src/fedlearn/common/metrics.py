@@ -1,10 +1,16 @@
 from __future__ import annotations
 
+import logging
+from typing import Any
+
 import numpy as np
+from flwr.common import MetricRecord
 from sklearn.exceptions import NotFittedError
 from sklearn.metrics import accuracy_score, log_loss, roc_auc_score
 
 from fedlearn.common.model import CLASSES
+
+logger = logging.getLogger(__name__)
 
 
 def compute_binary_metrics(model, X, y) -> dict[str, float]:
@@ -69,3 +75,19 @@ def compute_roc_auc(y_true, model, X) -> tuple[float, float]:
             pass
 
     return 0.5, 1.0
+
+
+def metricrecord_to_dict(mrec: MetricRecord) -> dict[str, Any]:
+    """
+    Convert a Flower MetricRecord into a plain dict.
+    """
+    try:
+        return dict(mrec)
+    except (TypeError, ValueError):
+        if hasattr(mrec, "to_dict"):
+            return mrec.to_dict()
+        if hasattr(mrec, "as_dict"):
+            return mrec.as_dict()
+
+        logger.warning("Unable to convert MetricRecord to dict; storing raw representation.")
+        return {"_raw": repr(mrec)}

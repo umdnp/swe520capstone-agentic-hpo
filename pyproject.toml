@@ -24,7 +24,7 @@ clientapp = "fedlearn.agentic_hpo.client_app:app"
 serverapp = "fedlearn.agentic_hpo.server_app:app"
 
 [tool.flwr.app.config]
-# baseline | static_hpo | agentic_hpo
+# baseline | static_hpo | hpo
 experiment = "baseline"
 
 # shared settings
@@ -44,3 +44,8 @@ hpo-n-trials = 15
 hpo-num-rounds = 2
 hpo-metric = "roc_auc"  # or "loss"
 hpo-direction = "maximize"  # "maximize" for roc_auc, "minimize" for loss
+
+# agent controls
+agent-model = "gpt-5.2"
+agent-temperature = 0.2
+

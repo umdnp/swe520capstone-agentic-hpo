@@ -11,7 +11,7 @@ import joblib
 from flwr.app import Context
 from flwr.serverapp import Grid, ServerApp
 
-from fedlearn.agentic_hpo.runners import BaselineRunner, StaticHPORunner, AgenticHPORunner, ExperimentRunner
+from fedlearn.hpo.runners import BaselineRunner, StaticHPORunner, AgenticHPORunner, ExperimentRunner
 from fedlearn.common.model import set_model_params
 
 app = ServerApp()
@@ -26,7 +26,7 @@ CONFIG_DIR = PROJECT_ROOT / "configs"
 RUNNERS: dict[str, ExperimentRunner] = {
     "baseline": BaselineRunner(),
     "static_hpo": StaticHPORunner(),
-    "agentic_hpo": AgenticHPORunner(),
+    "hpo": AgenticHPORunner(),
 }
 
 

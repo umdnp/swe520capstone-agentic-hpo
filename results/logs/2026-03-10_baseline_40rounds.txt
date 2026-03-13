@@ -1,0 +1,759 @@
+(fedlearn-hpo-wsl) jprantza@Morbo:~/git$ bash ./bin/run_baseline.sh
+Testing Baseline Configuration ...
+INFO : Starting FedAvg strategy:
+INFO :  ├── Number of rounds: 40
+INFO :  ├── ArrayRecord (0.00 MB)
+INFO :  ├── ConfigRecord (train): {'local-epochs': 3, 'penalty': l2, 'class-weight': none, 'sgd-learning-rate': optimal, 'sgd-eta0': 0.0, 'phase': final}
+INFO :  ├── ConfigRecord (evaluate): {'local-epochs': 3, 'penalty': l2, 'class-weight': none, 'sgd-learning-rate': optimal, 'sgd-eta0': 0.0, 'phase': final}
+INFO :  ├──> Sampling:
+INFO :  │       ├──Fraction: train (1.00) | evaluate ( 1.00)
+INFO :  │       ├──Minimum nodes: train (2) | evaluate (2)
+INFO :  │       └──Minimum available nodes: 2
+INFO :  └──> Keys in records:
+INFO :          ├── Weighted by: 'num-examples'
+INFO :          ├── ArrayRecord key: 'arrays'
+INFO :          └── ConfigRecord key: 'config'
+INFO :
+INFO :
+INFO : [ROUND 1/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+(pid=gcs_server) [2026-03-10 20:12:38,110 E 47071 47071] (gcs_server) gcs_server.cc:302: Failed to establish connection to the event+metrics exporter agent. Events and metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+(raylet) [2026-03-10 20:12:44,051 E 47237 47237] (raylet) main.cc:975: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+[2026-03-10 20:12:53,940 E 46970 47332] core_worker_process.cc:825: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+(ClientAppActor pid=49534) [2026-03-10 20:13:03,127 E 49534 49775] core_worker_process.cc:825: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6718362593603646, 'loss': 11.79547344480056, 'roc_auc': 0.5785373950784384, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6781116954670674, 'loss': 11.575054791749231, 'roc_auc': 0.5766096073885101, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 2/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7014262816499286, 'loss': 10.729703421571775, 'roc_auc': 0.5708392503304002, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7006511394941147, 'loss': 10.756263471006083, 'roc_auc': 0.568857695213893, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 3/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6848092864835083, 'loss': 11.338144757003933, 'roc_auc': 0.5749385967226486, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6814174805910344, 'loss': 11.465516246685734, 'roc_auc': 0.5678007485817913, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 4/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6841205640011019, 'loss': 11.367532513699269, 'roc_auc': 0.5713300128058174, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6861507638367141, 'loss': 11.297442293347823, 'roc_auc': 0.564357499643296, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 5/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7093215457436951, 'loss': 10.461920026870335, 'roc_auc': 0.5667159087990964, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7094916103180566, 'loss': 10.456629436390841, 'roc_auc': 0.5673650849054828, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 6/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6980515414861379, 'loss': 10.867998930121663, 'roc_auc': 0.5633240629249556, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.690358126721763, 'loss': 11.151303913760692, 'roc_auc': 0.5619568775649051, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 7/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6866938816399109, 'loss': 11.277750965431952, 'roc_auc': 0.5679195448957366, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6885549711995993, 'loss': 11.211429047179038, 'roc_auc': 0.5605928682886117, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 8/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7089333567081569, 'loss': 10.474849615748877, 'roc_auc': 0.5639461232012651, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7140245429501628, 'loss': 10.293378725745221, 'roc_auc': 0.5664222263461085, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 9/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6943574845350498, 'loss': 11.00293651237278, 'roc_auc': 0.565720366841199, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6877535687453042, 'loss': 11.246582622550171, 'roc_auc': 0.5579955314019007, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 10/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.705690099927371, 'loss': 10.593096203336376, 'roc_auc': 0.561064864693393, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7284998747808665, 'loss': 9.770191722078248, 'roc_auc': 0.5643883262582696, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 11/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7062222945728669, 'loss': 10.573783105714368, 'roc_auc': 0.5607015009953873, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7257450538442274, 'loss': 9.875359282511974, 'roc_auc': 0.5643887485782293, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 12/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7137168474041424, 'loss': 10.30622331912746, 'roc_auc': 0.56196679561521, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7270222890057602, 'loss': 9.82723640111526, 'roc_auc': 0.5635451154078237, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 13/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7096095569636105, 'loss': 10.45303452599525, 'roc_auc': 0.5608576150527762, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7375907838717757, 'loss': 9.443894017123846, 'roc_auc': 0.5662607231751042, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 14/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7272909414210222, 'loss': 9.817600895612113, 'roc_auc': 0.5619993935664338, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7164537941397445, 'loss': 10.20998101314029, 'roc_auc': 0.5635152736771962, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 15/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7014951538981692, 'loss': 10.748107770011377, 'roc_auc': 0.5562854941986748, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6970698722764839, 'loss': 10.90707892642722, 'roc_auc': 0.5568050019429613, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 16/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7296701645420622, 'loss': 9.732948228360236, 'roc_auc': 0.5622330271439121, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7261207112446781, 'loss': 9.857408326130376, 'roc_auc': 0.5631085543718737, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 17/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7167159207593479, 'loss': 10.199699061580773, 'roc_auc': 0.561126256592016, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7231905835211621, 'loss': 9.962799463071097, 'roc_auc': 0.5624625591450843, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 18/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.716271381702522, 'loss': 10.214571248094453, 'roc_auc': 0.5587118086710305, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7351615326821938, 'loss': 9.530539210001992, 'roc_auc': 0.5624964822406548, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 19/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7116068521625886, 'loss': 10.382527853798813, 'roc_auc': 0.5572612241437958, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7384172301527674, 'loss': 9.413488941574357, 'roc_auc': 0.5631811647326407, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 20/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7135290139998498, 'loss': 10.313009753286208, 'roc_auc': 0.5573014175147769, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7369646882043577, 'loss': 9.4696475685376, 'roc_auc': 0.5624892091411191, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 21/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7200718775827093, 'loss': 10.075895828429339, 'roc_auc': 0.5606581554455758, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7241672927623342, 'loss': 9.930325231146416, 'roc_auc': 0.5613918412651844, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 22/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7100415737934834, 'loss': 10.439396320692872, 'roc_auc': 0.555205453866614, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6949661908339595, 'loss': 10.984398310327649, 'roc_auc': 0.5537030102236162, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 23/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7192829772846803, 'loss': 10.106252957792112, 'roc_auc': 0.5599116868860166, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.733984472827448, 'loss': 9.575878757058536, 'roc_auc': 0.5630746024676223, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 24/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7196836885471711, 'loss': 10.092367988923398, 'roc_auc': 0.5604649914051362, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7328825444527924, 'loss': 9.62030213926393, 'roc_auc': 0.5639909931473722, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 25/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7144118310000249, 'loss': 10.281024886323081, 'roc_auc': 0.5594765014251332, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7269722013523666, 'loss': 9.830829208012533, 'roc_auc': 0.562062870158978, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 26/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7204162388239124, 'loss': 10.06316359427458, 'roc_auc': 0.5614999178171745, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7249937390433259, 'loss': 9.904303441240893, 'roc_auc': 0.5626673836353954, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 27/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7146184477447469, 'loss': 10.27555597413442, 'roc_auc': 0.5602398763507461, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7277235161532682, 'loss': 9.803896773133388, 'roc_auc': 0.5626084862969302, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 28/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7080129730271232, 'loss': 10.513085236046955, 'roc_auc': 0.5595987832182304, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6923115452041072, 'loss': 11.082344622864643, 'roc_auc': 0.5585161390686859, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 29/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7106551629141726, 'loss': 10.416617177121186, 'roc_auc': 0.5566113179408393, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7294264963686452, 'loss': 9.740747934586732, 'roc_auc': 0.561005148628359, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 30/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7020210874301887, 'loss': 10.729345252025889, 'roc_auc': 0.5560743616837607, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7192837465564739, 'loss': 10.105441085893602, 'roc_auc': 0.5621406430042244, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 31/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.721317839164517, 'loss': 10.033293131633242, 'roc_auc': 0.5614928736998224, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7239418983220636, 'loss': 9.939685810678073, 'roc_auc': 0.563021199925753, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 32/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7146121866312705, 'loss': 10.27367124809896, 'roc_auc': 0.5576524696119938, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7348610067618331, 'loss': 9.545746981945204, 'roc_auc': 0.5627376348352838, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 33/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7081068897292695, 'loss': 10.509693464578001, 'roc_auc': 0.5575253260821735, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6943400951665415, 'loss': 11.010523408186016, 'roc_auc': 0.5562064548710797, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 34/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7212614891432292, 'loss': 10.033226515546545, 'roc_auc': 0.5607063070328657, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7247433007763586, 'loss': 9.911687122278988, 'roc_auc': 0.5617279191379018, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 35/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7206854667033985, 'loss': 10.056481346751562, 'roc_auc': 0.5612297331311081, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7242925118958177, 'loss': 9.928979136524502, 'roc_auc': 0.5628876687073182, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 36/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7021713541536226, 'loss': 10.723319862936071, 'roc_auc': 0.5568397981437723, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7206110693713998, 'loss': 10.062435504635143, 'roc_auc': 0.561458901797443, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 37/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.713309875028175, 'loss': 10.318993243949494, 'roc_auc': 0.5590008915255671, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7281993488605059, 'loss': 9.782444871866044, 'roc_auc': 0.5622459963902774, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 38/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7124395802549526, 'loss': 10.351853639158312, 'roc_auc': 0.5591026004644003, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7161783120460806, 'loss': 10.221492248370485, 'roc_auc': 0.5622694643561862, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 39/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7128402915174434, 'loss': 10.338704583814499, 'roc_auc': 0.5559777025966135, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7272476834460305, 'loss': 9.815219070076836, 'roc_auc': 0.5605946920233527, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 40/40]
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7078376618497834, 'loss': 10.518903962616378, 'roc_auc': 0.559499185641273, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.694465314300025, 'loss': 11.002799135881538, 'roc_auc': 0.5578503502752605, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : Strategy execution finished in 2462.84s
+INFO :
+INFO : Final results:
+INFO :
+INFO :  Global Arrays:
+INFO :          ArrayRecord (0.001 MB)
+INFO :
+INFO :  Aggregated ClientApp-side Train Metrics:
+INFO :  { 1: { 'accuracy': '6.7184e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1795e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.7854e-01'},
+INFO :    2: { 'accuracy': '7.0143e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0730e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.7084e-01'},
+INFO :    3: { 'accuracy': '6.8481e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1338e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.7494e-01'},
+INFO :    4: { 'accuracy': '6.8412e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1368e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.7133e-01'},
+INFO :    5: { 'accuracy': '7.0932e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0462e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6672e-01'},
+INFO :    6: { 'accuracy': '6.9805e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0868e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6332e-01'},
+INFO :    7: { 'accuracy': '6.8669e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1278e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6792e-01'},
+INFO :    8: { 'accuracy': '7.0893e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0475e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6395e-01'},
+INFO :    9: { 'accuracy': '6.9436e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1003e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6572e-01'},
+INFO :    10: { 'accuracy': '7.0569e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0593e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6106e-01'},
+INFO :    11: { 'accuracy': '7.0622e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0574e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6070e-01'},
+INFO :    12: { 'accuracy': '7.1372e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0306e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6197e-01'},
+INFO :    13: { 'accuracy': '7.0961e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0453e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6086e-01'},
+INFO :    14: { 'accuracy': '7.2729e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8176e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6200e-01'},
+INFO :    15: { 'accuracy': '7.0150e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0748e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5629e-01'},
+INFO :    16: { 'accuracy': '7.2967e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.7329e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6223e-01'},
+INFO :    17: { 'accuracy': '7.1672e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0200e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6113e-01'},
+INFO :    18: { 'accuracy': '7.1627e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0215e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5871e-01'},
+INFO :    19: { 'accuracy': '7.1161e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0383e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5726e-01'},
+INFO :    20: { 'accuracy': '7.1353e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0313e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5730e-01'},
+INFO :    21: { 'accuracy': '7.2007e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0076e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6066e-01'},
+INFO :    22: { 'accuracy': '7.1004e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0439e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5521e-01'},
+INFO :    23: { 'accuracy': '7.1928e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0106e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5991e-01'},
+INFO :    24: { 'accuracy': '7.1968e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0092e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6046e-01'},
+INFO :    25: { 'accuracy': '7.1441e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0281e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5948e-01'},
+INFO :    26: { 'accuracy': '7.2042e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0063e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6150e-01'},
+INFO :    27: { 'accuracy': '7.1462e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0276e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6024e-01'},
+INFO :    28: { 'accuracy': '7.0801e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0513e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5960e-01'},
+INFO :    29: { 'accuracy': '7.1066e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0417e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5661e-01'},
+INFO :    30: { 'accuracy': '7.0202e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0729e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5607e-01'},
+INFO :    31: { 'accuracy': '7.2132e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0033e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6149e-01'},
+INFO :    32: { 'accuracy': '7.1461e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0274e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5765e-01'},
+INFO :    33: { 'accuracy': '7.0811e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0510e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5753e-01'},
+INFO :    34: { 'accuracy': '7.2126e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0033e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6071e-01'},
+INFO :    35: { 'accuracy': '7.2069e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0056e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6123e-01'},
+INFO :    36: { 'accuracy': '7.0217e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0723e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5684e-01'},
+INFO :    37: { 'accuracy': '7.1331e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0319e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5900e-01'},
+INFO :    38: { 'accuracy': '7.1244e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0352e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5910e-01'},
+INFO :    39: { 'accuracy': '7.1284e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0339e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5598e-01'},
+INFO :    40: { 'accuracy': '7.0784e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0519e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5950e-01'}}
+INFO :
+INFO :  Aggregated ClientApp-side Evaluate Metrics:
+INFO :  { 1: { 'accuracy': '6.7811e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1575e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.7661e-01'},
+INFO :    2: { 'accuracy': '7.0065e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0756e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6886e-01'},
+INFO :    3: { 'accuracy': '6.8142e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1466e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6780e-01'},
+INFO :    4: { 'accuracy': '6.8615e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1297e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6436e-01'},
+INFO :    5: { 'accuracy': '7.0949e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0457e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6737e-01'},
+INFO :    6: { 'accuracy': '6.9036e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1151e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6196e-01'},
+INFO :    7: { 'accuracy': '6.8855e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1211e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6059e-01'},
+INFO :    8: { 'accuracy': '7.1402e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0293e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6642e-01'},
+INFO :    9: { 'accuracy': '6.8775e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1247e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.5800e-01'},
+INFO :    10: { 'accuracy': '7.2850e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.7702e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6439e-01'},
+INFO :    11: { 'accuracy': '7.2575e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8754e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6439e-01'},
+INFO :    12: { 'accuracy': '7.2702e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8272e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6355e-01'},
+INFO :    13: { 'accuracy': '7.3759e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.4439e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6626e-01'},
+INFO :    14: { 'accuracy': '7.1645e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0210e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6352e-01'},
+INFO :    15: { 'accuracy': '6.9707e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0907e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5681e-01'},
+INFO :    16: { 'accuracy': '7.2612e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8574e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6311e-01'},
+INFO :    17: { 'accuracy': '7.2319e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.9628e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6246e-01'},
+INFO :    18: { 'accuracy': '7.3516e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.5305e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6250e-01'},
+INFO :    19: { 'accuracy': '7.3842e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.4135e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6318e-01'},
+INFO :    20: { 'accuracy': '7.3696e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.4696e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6249e-01'},
+INFO :    21: { 'accuracy': '7.2417e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.9303e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6139e-01'},
+INFO :    22: { 'accuracy': '6.9497e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0984e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5370e-01'},
+INFO :    23: { 'accuracy': '7.3398e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.5759e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6307e-01'},
+INFO :    24: { 'accuracy': '7.3288e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.6203e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6399e-01'},
+INFO :    25: { 'accuracy': '7.2697e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8308e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6206e-01'},
+INFO :    26: { 'accuracy': '7.2499e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.9043e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6267e-01'},
+INFO :    27: { 'accuracy': '7.2772e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8039e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6261e-01'},
+INFO :    28: { 'accuracy': '6.9231e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.1082e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5852e-01'},
+INFO :    29: { 'accuracy': '7.2943e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.7407e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6101e-01'},
+INFO :    30: { 'accuracy': '7.1928e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0105e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6214e-01'},
+INFO :    31: { 'accuracy': '7.2394e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.9397e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6302e-01'},
+INFO :    32: { 'accuracy': '7.3486e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.5457e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6274e-01'},
+INFO :    33: { 'accuracy': '6.9434e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.1011e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5621e-01'},
+INFO :    34: { 'accuracy': '7.2474e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.9117e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6173e-01'},
+INFO :    35: { 'accuracy': '7.2429e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.9290e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6289e-01'},
+INFO :    36: { 'accuracy': '7.2061e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0062e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6146e-01'},
+INFO :    37: { 'accuracy': '7.2820e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.7824e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6225e-01'},
+INFO :    38: { 'accuracy': '7.1618e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0221e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6227e-01'},
+INFO :    39: { 'accuracy': '7.2725e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8152e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.6059e-01'},
+INFO :    40: { 'accuracy': '6.9447e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.1003e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '5.5785e-01'}}
+INFO :
+INFO :  ServerApp-side Evaluate Metrics:
+INFO :  {}
+INFO :
+2026-03-10 20:53:10,453 | INFO | fedlearn.hpo.server_app | Saving final model to /d/school/umich/swe520/git/swe520capstone-agentic-hpo/configs/baseline.pkl
+(ClientAppActor pid=49328) WARNING :   Manually terminating ClientAppActor
+(ClientAppActor pid=49535) [2026-03-10 20:13:07,303 E 49535 50560] core_worker_process.cc:825: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14 [repeated 15x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)
+(ClientAppActor pid=49535) WARNING :   Manually terminating ClientAppActor [repeated 15x across cluster]

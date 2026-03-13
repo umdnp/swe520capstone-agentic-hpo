@@ -162,7 +162,7 @@ class StaticHPORunner:
         # rebuild the best_hp from best_params
         best_hp = self._suggest_hparams(optuna.trial.FixedTrial(study.best_params), base_hp)
 
-        logger.info(f"[static_hpo] best_value={study.best_value}, best_params={study.best_params}")
+        logger.info("[static_hpo] best_value=%s, best_params=%s", study.best_value, study.best_params)
 
         best_cfg = best_hp.to_config()
 

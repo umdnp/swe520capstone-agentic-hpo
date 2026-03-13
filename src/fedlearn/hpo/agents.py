@@ -27,11 +27,24 @@ logger = logging.getLogger(__name__)
 Penalty = Literal["l1", "l2", "elasticnet"]
 Schedule = Literal["optimal", "constant", "adaptive"]
 
-ALLOWED_PENALTIES = tuple(get_args(Penalty))
-ALLOWED_SCHEDULES = tuple(get_args(Schedule))
+ALLOWED_PENALTIES = list(get_args(Penalty))
+ALLOWED_SCHEDULES = list(get_args(Schedule))
 
-ALLOWED_PENALTIES_LIST = list(ALLOWED_PENALTIES)
-ALLOWED_SCHEDULES_LIST = list(ALLOWED_SCHEDULES)
+
+def _safe_float(x: Any) -> float | None:
+    return float(x) if isinstance(x, (int, float)) else None
+
+
+def _mean_last(values: list[float], n: int) -> float | None:
+    if len(values) < n:
+        return None
+    return sum(values[-n:]) / n
+
+
+def _delta_window(values: list[float], n: int) -> float | None:
+    if len(values) < n:
+        return None
+    return values[-1] - values[-n]
 
 
 class AgenticHPOProposal(BaseModel):
@@ -102,73 +115,34 @@ class AgenticHPOController:
         return self._exploit_by_round.get(int(server_round))
 
     @staticmethod
-    def _coerce_and_validate(p: AgenticHPOProposal) -> AgenticHPOProposal:
-        """
-        Defensive normalization and re-validation.
-        """
-        penalty = str(p.penalty).strip().lower()
-        sched = str(p.sgd_learning_rate).strip().lower()
-
-        if penalty not in ALLOWED_PENALTIES:
-            penalty = "l2"
-        if sched not in ALLOWED_SCHEDULES:
-            sched = "optimal"
-
-        return AgenticHPOProposal(
-            local_epochs=min(max(int(p.local_epochs), 1), 10),
-            penalty=penalty,  # type: ignore[arg-type]
-            sgd_learning_rate=sched,  # type: ignore[arg-type]
-            sgd_eta0=float(p.sgd_eta0),
-            exploit=1 if int(p.exploit) == 1 else 0,
-        )
-
-    @staticmethod
-    def _safe_float(x: Any) -> float | None:
-        return float(x) if isinstance(x, (int, float)) else None
-
-    def _build_history_summary(self, history: list[dict[str, Any]]) -> dict[str, Any]:
-        recent = history[-self.max_history_rounds:]
-
+    def _build_history_summary(recent: list[dict[str, Any]]) -> dict[str, Any]:
         aucs: list[float] = []
         losses: list[float] = []
 
         for rec in recent:
             metrics = rec.get("metrics", {})
-            auc = self._safe_float(metrics.get("roc_auc"))
-            loss = self._safe_float(metrics.get("loss"))
+            auc = _safe_float(metrics.get("roc_auc"))
+            loss = _safe_float(metrics.get("loss"))
 
             if auc is not None:
                 aucs.append(auc)
             if loss is not None:
                 losses.append(loss)
 
-        def mean_last(values: list[float], n: int) -> float | None:
-            if len(values) < n:
-                return None
-            return sum(values[-n:]) / n
-
-        def delta_window(values: list[float], n: int) -> float | None:
-            if len(values) < n:
-                return None
-            window = values[-n:]
-            return window[-1] - window[0]
-
         auc_last = aucs[-1] if aucs else None
         loss_last = losses[-1] if losses else None
 
-        auc_mean_3 = mean_last(aucs, 3)
-        auc_mean_5 = mean_last(aucs, 5)
-        loss_mean_3 = mean_last(losses, 3)
-        loss_mean_5 = mean_last(losses, 5)
+        auc_mean_3 = _mean_last(aucs, 3)
+        auc_mean_5 = _mean_last(aucs, 5)
+        loss_mean_3 = _mean_last(losses, 3)
+        loss_mean_5 = _mean_last(losses, 5)
 
-        auc_delta_3 = delta_window(aucs, 3)
-        auc_delta_5 = delta_window(aucs, 5)
-        loss_delta_3 = delta_window(losses, 3)
-        loss_delta_5 = delta_window(losses, 5)
+        auc_delta_3 = _delta_window(aucs, 3)
+        auc_delta_5 = _delta_window(aucs, 5)
+        loss_delta_3 = _delta_window(losses, 3)
+        loss_delta_5 = _delta_window(losses, 5)
 
-        plateau = False
-        if auc_delta_5 is not None and abs(auc_delta_5) < 0.002:
-            plateau = True
+        plateau = auc_delta_5 is not None and abs(auc_delta_5) < 0.002
 
         return {
             "auc_last": auc_last,
@@ -198,7 +172,7 @@ class AgenticHPOController:
             return base_hp
 
         recent = history[-self.max_history_rounds:]
-        summary = self._build_history_summary(history)
+        summary = self._build_history_summary(recent)
         explore_phase = server_round <= math.ceil(0.25 * self.total_rounds)
 
         if explore_phase:
@@ -227,8 +201,8 @@ class AgenticHPOController:
             "phase": "exploration" if explore_phase else "stabilization",
             "search_space": {
                 "local_epochs": [1, 10],
-                "penalty": ALLOWED_PENALTIES_LIST,
-                "sgd_learning_rate": ALLOWED_SCHEDULES_LIST,
+                "penalty": ALLOWED_PENALTIES,
+                "sgd_learning_rate": ALLOWED_SCHEDULES,
                 "sgd_eta0": "if constant/adaptive: [1e-4, 1e-1]; if optimal: 0.0",
                 "exploit": [0, 1],
             },
@@ -256,7 +230,6 @@ class AgenticHPOController:
             if not isinstance(proposal, AgenticHPOProposal):
                 raise TypeError(f"Unexpected output type: {type(proposal)}")
 
-            proposal = self._coerce_and_validate(proposal)
             self._exploit_by_round[int(server_round)] = int(proposal.exploit)
 
         except (ValidationError, ValueError, TypeError) as e:
@@ -313,13 +286,9 @@ class AgenticFedAvg(FedAvg):
         self._hp_by_round[rnd] = hp
 
         exploit = self.controller.get_exploit(rnd)
-        prev_metrics = self._history[-1] if self._history else None
-        prev_auc = None
-        prev_loss = None
-
-        if prev_metrics:
-            prev_auc = prev_metrics.get("metrics", {}).get("roc_auc")
-            prev_loss = prev_metrics.get("metrics", {}).get("loss")
+        last = self._history[-1]["metrics"] if self._history else {}
+        prev_auc = last.get("roc_auc")
+        prev_loss = last.get("loss")
 
         logger.info(
             "[agentic_hpo] round=%d exploit=%s prev_auc=%s prev_loss=%s hp={local_epochs=%d penalty=%s lr=%s eta0=%.6g}",

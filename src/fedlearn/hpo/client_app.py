@@ -78,7 +78,7 @@ def train(message: Message, context: Context) -> Message:
         raise ValueError(f"Unknown data phase: {phase!r}")
 
     hp = HParams.from_message(message, context)
-    logger.info(f"[Client] Hyperparams this round: {hp}, phase={phase}")
+    logger.info("[Client] Hyperparams this round: %s, phase=%s", hp, phase)
 
     model = _init_model(message, context, hp)
     pre = model.named_steps["preprocessor"]

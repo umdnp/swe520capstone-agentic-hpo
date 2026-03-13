@@ -27,18 +27,10 @@ RUNNERS: dict[str, Callable[[], ExperimentRunner]] = {
 }
 
 
-def _init_environment() -> None:
-    load_dotenv(PROJECT_ROOT / ".env")
-
-
-def _init_logging() -> None:
-    setup_logging()
-
-
 @app.main()
 def main(grid: Grid, context: Context) -> None:
-    _init_environment()
-    _init_logging()
+    load_dotenv(PROJECT_ROOT / ".env")
+    setup_logging()
     logger = logging.getLogger(__name__)
 
     # make sure "configs" dir exists

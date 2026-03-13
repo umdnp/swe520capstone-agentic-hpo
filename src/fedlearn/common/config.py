@@ -30,8 +30,7 @@ class HParams:
 
     @property
     def sgd_eta0(self) -> float:
-        sched = self.sgd_learning_rate
-        return self.sgd_eta0_cfg if sched in ("constant", "adaptive") else 0.0
+        return self.sgd_eta0_cfg if self.sgd_learning_rate in ("constant", "adaptive") else 0.0
 
     def to_config(self, phase: str = PHASE_FINAL) -> ConfigRecord:
         return ConfigRecord({
@@ -44,10 +43,10 @@ class HParams:
         })
 
     @staticmethod
-    def from_config(cfg: ConfigRecord) -> "HParams":
+    def from_config(cfg: dict) -> "HParams":
         return HParams(
-            local_epochs=int(cfg.get(HP_LOCAL_EPOCHS)),
-            penalty=str(cfg.get(HP_PENALTY)),
+            local_epochs=int(cfg[HP_LOCAL_EPOCHS]),
+            penalty=str(cfg[HP_PENALTY]),
             class_weight_cfg=str(cfg.get(HP_CLASS_WEIGHT, "none")).strip().lower(),
             sgd_learning_rate=str(cfg.get(HP_LR_SCHEDULE, "optimal")).strip().lower(),
             sgd_eta0_cfg=float(cfg.get(HP_ETA0, 0.0)),
@@ -55,14 +54,7 @@ class HParams:
 
     @staticmethod
     def from_run_config(context: Context) -> "HParams":
-        rc = context.run_config
-        return HParams(
-            local_epochs=int(rc[HP_LOCAL_EPOCHS]),
-            penalty=str(rc[HP_PENALTY]),
-            class_weight_cfg=str(rc.get(HP_CLASS_WEIGHT, "none")).strip().lower(),
-            sgd_learning_rate=str(rc.get(HP_LR_SCHEDULE, "optimal")).strip().lower(),
-            sgd_eta0_cfg=float(rc.get(HP_ETA0, 0.0)),
-        )
+        return HParams.from_config(context.run_config)
 
     @staticmethod
     def from_message(message: Message, context: Context) -> "HParams":
@@ -71,7 +63,7 @@ class HParams:
         if cfg is None:
             return HParams.from_run_config(context)
 
-        merged = ConfigRecord(dict(context.run_config))
+        merged = dict(context.run_config)
         for k, v in cfg.items():
             merged[k] = v
 

@@ -212,3 +212,7 @@ __marimo__/
 
 # eICU-CRD Database - DO NOT DISTRIBUTE
 data/duckdb/fedlearn.duckdb
+
+# Ignore Flower runtime artifacts, but allow Flower config
+.flwr/*
+!.flwr/config.toml

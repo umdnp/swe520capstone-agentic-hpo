@@ -1,0 +1,892 @@
+(fedlearn-hpo-wsl) jprantza@Morbo:~/git$ bash ./bin/run_agentic_hpo.sh
+Testing Agentic HPO Configuration ...
+2026-03-11 15:28:30,841 | INFO | fedlearn.hpo.agents | Agent enabled (OPENAI_API_KEY found)
+INFO : Starting AgenticFedAvg strategy:
+INFO :  ├── Number of rounds: 40
+INFO :  ├── ArrayRecord (0.00 MB)
+INFO :  ├── ConfigRecord (train): {'local-epochs': 3, 'penalty': l2, 'class-weight': none, 'sgd-learning-rate': optimal, 'sgd-eta0': 0.0, 'phase': final}
+INFO :  ├── ConfigRecord (evaluate): {'local-epochs': 3, 'penalty': l2, 'class-weight': none, 'sgd-learning-rate': optimal, 'sgd-eta0': 0.0, 'phase': final}
+INFO :  ├──> Sampling:
+INFO :  │       ├──Fraction: train (1.00) | evaluate ( 1.00)
+INFO :  │       ├──Minimum nodes: train (2) | evaluate (2)
+INFO :  │       └──Minimum available nodes: 2
+INFO :  └──> Keys in records:
+INFO :          ├── Weighted by: 'num-examples'
+INFO :          ├── ArrayRecord key: 'arrays'
+INFO :          └── ConfigRecord key: 'config'
+INFO :
+INFO :
+INFO : [ROUND 1/40]
+2026-03-11 15:28:31,268 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=1 exploit=NA prev_auc=NA prev_loss=NA hp={local_epochs=3 penalty=l2 lr=optimal eta0=0}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+(pid=gcs_server) [2026-03-11 15:29:02,283 E 773 773] (gcs_server) gcs_server.cc:302: Failed to establish connection to the event+metrics exporter agent. Events and metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+(raylet) [2026-03-11 15:29:07,083 E 939 939] (raylet) main.cc:975: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+[2026-03-11 15:29:16,156 E 672 1034] core_worker_process.cc:825: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+(ClientAppActor pid=3033) [2026-03-11 15:29:24,115 E 3033 3468] core_worker_process.cc:825: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6718362593603646, 'loss': 11.79547344480056, 'roc_auc': 0.5785373950784384, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6781116954670674, 'loss': 11.575054791749231, 'roc_auc': 0.5766096073885101, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 2/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:30:32,506 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=2 exploit=0 prev_auc=0.576610 prev_loss=11.575055 hp={local_epochs=5 penalty=l2 lr=optimal eta0=0}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7257694908462521, 'loss': 9.841386754143137, 'roc_auc': 0.5909967415736561, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6899574254946156, 'loss': 11.154845376233773, 'roc_auc': 0.5724068199809509, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 3/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:31:43,492 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=3 exploit=0 prev_auc=0.572407 prev_loss=11.154845 hp={local_epochs=7 penalty=l2 lr=optimal eta0=0}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6942260011520449, 'loss': 10.984296521689862, 'roc_auc': 0.583642037709943, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7081141998497371, 'loss': 10.49545469124443, 'roc_auc': 0.5604968405322655, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 4/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:32:41,288 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=4 exploit=0 prev_auc=0.560497 prev_loss=10.495455 hp={local_epochs=7 penalty=l2 lr=adaptive eta0=0.01}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7329384657767537, 'loss': 9.576007955311741, 'roc_auc': 0.6015916277071682, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6995742549461558, 'loss': 10.791196976557993, 'roc_auc': 0.5754435230118506, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 5/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:33:40,882 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=5 exploit=0 prev_auc=0.575444 prev_loss=10.791197 hp={local_epochs=9 penalty=l2 lr=adaptive eta0=0.01}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7085702121265246, 'loss': 10.45845905115624, 'roc_auc': 0.5996334793280431, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.68725269221137, 'loss': 11.22874444964931, 'roc_auc': 0.5867363619444292, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 6/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:34:57,438 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=6 exploit=0 prev_auc=0.586736 prev_loss=11.228744 hp={local_epochs=9 penalty=l2 lr=adaptive eta0=0.005}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.6925104560595057, 'loss': 11.013769323039124, 'roc_auc': 0.6002417034298725, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7072627097420485, 'loss': 10.49461173512572, 'roc_auc': 0.6068666074388089, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 7/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:35:56,842 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=7 exploit=0 prev_auc=0.606867 prev_loss=10.494612 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.005}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7304089759322798, 'loss': 9.627268330464307, 'roc_auc': 0.6179449869444149, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7575006260956674, 'loss': 8.650445574494658, 'roc_auc': 0.6261730333299899, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 8/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:36:56,471 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=8 exploit=1 prev_auc=0.626173 prev_loss=8.650446 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.005}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7250870294773222, 'loss': 9.813017518741784, 'roc_auc': 0.6209249181596468, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7417731029301278, 'loss': 9.21625814674458, 'roc_auc': 0.6218993629302912, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 9/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:37:54,933 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=9 exploit=0 prev_auc=0.621899 prev_loss=9.216258 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.003}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7259134964562097, 'loss': 9.76747093393412, 'roc_auc': 0.6247541793058434, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7562734785875281, 'loss': 8.684701645126154, 'roc_auc': 0.6363502987339547, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 10/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:38:54,452 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=10 exploit=0 prev_auc=0.636350 prev_loss=8.684702 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.005}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7154574369505873, 'loss': 10.15346483610663, 'roc_auc': 0.6158951788267975, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7367142499373904, 'loss': 9.384410491673561, 'roc_auc': 0.620578422787102, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 11/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:39:52,241 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=11 exploit=1 prev_auc=0.620578 prev_loss=9.384410 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.003}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7355243056425156, 'loss': 9.405353668015938, 'roc_auc': 0.6334525850324428, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7443275732531931, 'loss': 9.0962290605074, 'roc_auc': 0.6305654524707435, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 12/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:40:51,297 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=12 exploit=0 prev_auc=0.630565 prev_loss=9.096229 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.004}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7155701369931629, 'loss': 10.141191914110042, 'roc_auc': 0.6165578020706789, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7562233909341347, 'loss': 8.665303609135645, 'roc_auc': 0.636051371788083, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 13/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:41:50,642 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=13 exploit=1 prev_auc=0.636051 prev_loss=8.665304 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.004}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.716672092965013, 'loss': 10.091624059250972, 'roc_auc': 0.6196048345615564, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7389932381667919, 'loss': 9.284808597464739, 'roc_auc': 0.6285677109659056, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 14/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:42:49,664 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=14 exploit=0 prev_auc=0.628568 prev_loss=9.284809 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.003}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7343847829898069, 'loss': 9.425132938849586, 'roc_auc': 0.6321286176259467, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7599799649386427, 'loss': 8.547437836134444, 'roc_auc': 0.6406698083075695, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 15/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:43:47,238 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=15 exploit=1 prev_auc=0.640670 prev_loss=8.547438 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.003}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7384607678629568, 'loss': 9.278722147502165, 'roc_auc': 0.6283579369210249, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7579764588029051, 'loss': 8.591848146247536, 'roc_auc': 0.6465611705358143, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 16/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:44:45,833 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=16 exploit=1 prev_auc=0.646561 prev_loss=8.591848 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.003}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7234090510656416, 'loss': 9.81903520501023, 'roc_auc': 0.6209505069856271, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7605810167793638, 'loss': 8.511071178719934, 'roc_auc': 0.6399144860079521, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 17/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:45:43,964 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=17 exploit=1 prev_auc=0.639914 prev_loss=8.511071 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.003}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7525670565253324, 'loss': 8.762863351860142, 'roc_auc': 0.6445785424204697, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.757450538442274, 'loss': 8.603771660832194, 'roc_auc': 0.6420912577152984, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 18/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:46:44,106 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=18 exploit=1 prev_auc=0.642091 prev_loss=8.603772 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.003}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.716822359688447, 'loss': 10.053333264822811, 'roc_auc': 0.619670881249602, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7537941397445529, 'loss': 8.722894878246187, 'roc_auc': 0.6394187785484584, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 19/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:47:42,132 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=19 exploit=0 prev_auc=0.639419 prev_loss=8.722895 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0025}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.732093215457437, 'loss': 9.484409649616065, 'roc_auc': 0.6347717830539618, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7440771349862259, 'loss': 9.049918881392243, 'roc_auc': 0.635209487284925, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 20/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:48:40,794 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=20 exploit=0 prev_auc=0.635209 prev_loss=9.049919 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.003}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7217248115404844, 'loss': 9.866091931813731, 'roc_auc': 0.6234891804904702, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.741923365890308, 'loss': 9.140236410583599, 'roc_auc': 0.6292436950421243, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 21/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:49:45,966 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=21 exploit=0 prev_auc=0.629244 prev_loss=9.140236 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0025}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7260261964987853, 'loss': 9.695577890132244, 'roc_auc': 0.6246789310747102, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7592787377911345, 'loss': 8.515794565600896, 'roc_auc': 0.6446453814150895, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 22/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:50:43,949 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=22 exploit=1 prev_auc=0.644645 prev_loss=8.515795 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0025}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7217623782213429, 'loss': 9.844695393444841, 'roc_auc': 0.6213921257959503, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7590282995241673, 'loss': 8.538392417269321, 'roc_auc': 0.6443249250087915, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 23/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:51:43,607 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=23 exploit=1 prev_auc=0.644325 prev_loss=8.538392 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0025}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7202346665330963, 'loss': 9.896438104132475, 'roc_auc': 0.6203773623518258, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7592036063110443, 'loss': 8.508438016560794, 'roc_auc': 0.6455078557275818, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 24/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:52:41,493 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=24 exploit=1 prev_auc=0.645508 prev_loss=8.508438 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0025}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7273660747827393, 'loss': 9.637256773291638, 'roc_auc': 0.631562368343014, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.738442273979464, 'loss': 9.246720434474337, 'roc_auc': 0.6315822855944881, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 25/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:53:39,737 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=25 exploit=0 prev_auc=0.631582 prev_loss=9.246720 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.003}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7139610308297227, 'loss': 10.131866386446967, 'roc_auc': 0.618591470691509, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7384172301527674, 'loss': 9.258509423883474, 'roc_auc': 0.6280453540204027, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 26/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:54:38,844 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=26 exploit=0 prev_auc=0.628045 prev_loss=9.258509 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.002}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7407899020761852, 'loss': 9.135526864226371, 'roc_auc': 0.6429142989531211, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7568244427748559, 'loss': 8.587616286822728, 'roc_auc': 0.6441483114860487, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 27/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:55:37,855 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=27 exploit=1 prev_auc=0.644148 prev_loss=8.587616 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.002}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7168035763480177, 'loss': 9.99059088485682, 'roc_auc': 0.6267266797117675, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7594290007513148, 'loss': 8.480364362033171, 'roc_auc': 0.654817571748668, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 28/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:56:36,582 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=28 exploit=1 prev_auc=0.654818 prev_loss=8.480364 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.002}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7185754714618448, 'loss': 9.930388990104987, 'roc_auc': 0.6236100788016131, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7489857250187829, 'loss': 8.833259284431415, 'roc_auc': 0.6390265304731859, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 29/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:57:35,497 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=29 exploit=0 prev_auc=0.639027 prev_loss=8.833259 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0018}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7228079841719052, 'loss': 9.765647198257774, 'roc_auc': 0.6267489087593776, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7150513398447282, 'loss': 10.064009591245004, 'roc_auc': 0.6137953655481619, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 30/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:58:32,919 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=30 exploit=0 prev_auc=0.613795 prev_loss=10.064010 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.002}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7381727566430414, 'loss': 9.208872443873833, 'roc_auc': 0.6399142215160818, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.761106937139995, 'loss': 8.408505800375947, 'roc_auc': 0.6641520999488714, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 31/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 15:59:31,408 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=31 exploit=1 prev_auc=0.664152 prev_loss=8.408506 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.002}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7208920834481205, 'loss': 9.83607898501209, 'roc_auc': 0.6226061644790433, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7580265464562985, 'loss': 8.52720305795962, 'roc_auc': 0.6487126830593511, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 32/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 16:00:30,731 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=32 exploit=1 prev_auc=0.648713 prev_loss=8.527203 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.002}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7158769315535074, 'loss': 10.007014709159787, 'roc_auc': 0.6215233917191871, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7527673428499875, 'loss': 8.680492424210899, 'roc_auc': 0.643861085778053, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 33/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 16:01:29,841 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=33 exploit=0 prev_auc=0.643861 prev_loss=8.680492 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0018}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7393999348844198, 'loss': 9.143515323280745, 'roc_auc': 0.6439664710644968, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7488354620586026, 'loss': 8.803294553957349, 'roc_auc': 0.6529430396397768, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 34/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 16:02:27,808 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=34 exploit=1 prev_auc=0.652943 prev_loss=8.803295 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.002}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7318678153722857, 'loss': 9.422176101999515, 'roc_auc': 0.6372420290741962, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7286501377410468, 'loss': 9.550444517827277, 'roc_auc': 0.6263823219919633, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 35/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 16:03:28,547 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=35 exploit=0 prev_auc=0.626382 prev_loss=9.550445 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0018}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7250118961156052, 'loss': 9.666570651919999, 'roc_auc': 0.6257665364395906, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7238667668419735, 'loss': 9.712874530345932, 'roc_auc': 0.6231865708793685, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 36/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 16:04:26,869 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=36 exploit=0 prev_auc=0.623187 prev_loss=9.712875 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.002}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7351486388339302, 'loss': 9.286744272059668, 'roc_auc': 0.6412133174041809, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7313799148509893, 'loss': 9.451654491924385, 'roc_auc': 0.6276560676524088, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 37/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 16:05:25,923 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=37 exploit=0 prev_auc=0.627656 prev_loss=9.451654 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0015}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7275726915274612, 'loss': 9.558155021347376, 'roc_auc': 0.6340699865387885, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7598797896318558, 'loss': 8.414150712128817, 'roc_auc': 0.6733677636564322, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 38/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 16:06:24,675 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=38 exploit=1 prev_auc=0.673368 prev_loss=8.414151 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0015}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7225450174058955, 'loss': 9.731753177749534, 'roc_auc': 0.6311900010134217, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.754320060105184, 'loss': 8.60753400119486, 'roc_auc': 0.6487802290010491, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 39/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 16:07:23,433 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=39 exploit=1 prev_auc=0.648780 prev_loss=8.607534 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0015}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7150254201207142, 'loss': 9.994459438525306, 'roc_auc': 0.6253305095071819, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7580015026296019, 'loss': 8.462455523435302, 'roc_auc': 0.6580282412411966, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : [ROUND 40/40]
+INFO : HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-03-11 16:08:22,656 | INFO | fedlearn.hpo.agents | [agentic_hpo] round=40 exploit=1 prev_auc=0.658028 prev_loss=8.462456 hp={local_epochs=10 penalty=l2 lr=adaptive eta0=0.0015}
+INFO : configure_train: Sampled 3 nodes (out of 3)
+INFO : HTTP Request: POST https://api.openai.com/v1/traces/ingest "HTTP/1.1 204 No Content"
+INFO : aggregate_train: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7180871046106839, 'loss': 9.88323049967865, 'roc_auc': 0.6265079557948449, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO : configure_evaluate: Sampled 3 nodes (out of 3)
+INFO : aggregate_evaluate: Received 3 results and 0 failures
+INFO :  └──> Aggregated MetricRecord: {'accuracy': 0.7536689206110694, 'loss': 8.608446208353335, 'roc_auc': 0.6521164385536584, 'log-loss-failed': 0.0, 'roc-auc-failed': 0.0}
+INFO :
+INFO : Strategy execution finished in 2449.16s
+INFO :
+INFO : Final results:
+INFO :
+INFO :  Global Arrays:
+INFO :          ArrayRecord (0.001 MB)
+INFO :
+INFO :  Aggregated ClientApp-side Train Metrics:
+INFO :  { 1: { 'accuracy': '6.7184e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1795e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.7854e-01'},
+INFO :    2: { 'accuracy': '7.2577e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '9.8414e+00',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.9100e-01'},
+INFO :    3: { 'accuracy': '6.9423e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0984e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.8364e-01'},
+INFO :    4: { 'accuracy': '7.3294e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '9.5760e+00',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '6.0159e-01'},
+INFO :    5: { 'accuracy': '7.0857e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0458e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.9963e-01'},
+INFO :    6: { 'accuracy': '6.9251e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1014e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '6.0024e-01'},
+INFO :    7: { 'accuracy': '7.3041e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '9.6273e+00',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '6.1794e-01'},
+INFO :    8: { 'accuracy': '7.2509e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '9.8130e+00',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '6.2092e-01'},
+INFO :    9: { 'accuracy': '7.2591e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '9.7675e+00',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '6.2475e-01'},
+INFO :    10: { 'accuracy': '7.1546e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0153e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.1590e-01'},
+INFO :    11: { 'accuracy': '7.3552e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.4054e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3345e-01'},
+INFO :    12: { 'accuracy': '7.1557e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0141e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.1656e-01'},
+INFO :    13: { 'accuracy': '7.1667e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0092e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.1960e-01'},
+INFO :    14: { 'accuracy': '7.3438e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.4251e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3213e-01'},
+INFO :    15: { 'accuracy': '7.3846e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.2787e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2836e-01'},
+INFO :    16: { 'accuracy': '7.2341e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8190e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2095e-01'},
+INFO :    17: { 'accuracy': '7.5257e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.7629e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4458e-01'},
+INFO :    18: { 'accuracy': '7.1682e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0053e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.1967e-01'},
+INFO :    19: { 'accuracy': '7.3209e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.4844e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3477e-01'},
+INFO :    20: { 'accuracy': '7.2172e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8661e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2349e-01'},
+INFO :    21: { 'accuracy': '7.2603e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.6956e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2468e-01'},
+INFO :    22: { 'accuracy': '7.2176e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8447e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2139e-01'},
+INFO :    23: { 'accuracy': '7.2023e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8964e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2038e-01'},
+INFO :    24: { 'accuracy': '7.2737e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.6373e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3156e-01'},
+INFO :    25: { 'accuracy': '7.1396e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0132e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.1859e-01'},
+INFO :    26: { 'accuracy': '7.4079e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.1355e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4291e-01'},
+INFO :    27: { 'accuracy': '7.1680e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.9906e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2673e-01'},
+INFO :    28: { 'accuracy': '7.1858e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.9304e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2361e-01'},
+INFO :    29: { 'accuracy': '7.2281e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.7656e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2675e-01'},
+INFO :    30: { 'accuracy': '7.3817e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.2089e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3991e-01'},
+INFO :    31: { 'accuracy': '7.2089e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8361e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2261e-01'},
+INFO :    32: { 'accuracy': '7.1588e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0007e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2152e-01'},
+INFO :    33: { 'accuracy': '7.3940e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.1435e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4397e-01'},
+INFO :    34: { 'accuracy': '7.3187e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.4222e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3724e-01'},
+INFO :    35: { 'accuracy': '7.2501e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.6666e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2577e-01'},
+INFO :    36: { 'accuracy': '7.3515e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.2867e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4121e-01'},
+INFO :    37: { 'accuracy': '7.2757e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.5582e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3407e-01'},
+INFO :    38: { 'accuracy': '7.2255e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.7318e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3119e-01'},
+INFO :    39: { 'accuracy': '7.1503e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.9945e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2533e-01'},
+INFO :    40: { 'accuracy': '7.1809e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.8832e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2651e-01'}}
+INFO :
+INFO :  Aggregated ClientApp-side Evaluate Metrics:
+INFO :  { 1: { 'accuracy': '6.7811e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1575e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.7661e-01'},
+INFO :    2: { 'accuracy': '6.8996e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1155e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.7241e-01'},
+INFO :    3: { 'accuracy': '7.0811e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0495e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.6050e-01'},
+INFO :    4: { 'accuracy': '6.9957e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0791e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.7544e-01'},
+INFO :    5: { 'accuracy': '6.8725e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.1229e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '5.8674e-01'},
+INFO :    6: { 'accuracy': '7.0726e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '1.0495e+01',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '6.0687e-01'},
+INFO :    7: { 'accuracy': '7.5750e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '8.6504e+00',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '6.2617e-01'},
+INFO :    8: { 'accuracy': '7.4177e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '9.2163e+00',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '6.2190e-01'},
+INFO :    9: { 'accuracy': '7.5627e-01',
+INFO :         'log-loss-failed': '0.0000e+00',
+INFO :         'loss': '8.6847e+00',
+INFO :         'roc-auc-failed': '0.0000e+00',
+INFO :         'roc_auc': '6.3635e-01'},
+INFO :    10: { 'accuracy': '7.3671e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.3844e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2058e-01'},
+INFO :    11: { 'accuracy': '7.4433e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.0962e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3057e-01'},
+INFO :    12: { 'accuracy': '7.5622e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.6653e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3605e-01'},
+INFO :    13: { 'accuracy': '7.3899e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.2848e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2857e-01'},
+INFO :    14: { 'accuracy': '7.5998e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.5474e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4067e-01'},
+INFO :    15: { 'accuracy': '7.5798e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.5918e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4656e-01'},
+INFO :    16: { 'accuracy': '7.6058e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.5111e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3991e-01'},
+INFO :    17: { 'accuracy': '7.5745e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.6038e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4209e-01'},
+INFO :    18: { 'accuracy': '7.5379e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.7229e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3942e-01'},
+INFO :    19: { 'accuracy': '7.4408e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.0499e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3521e-01'},
+INFO :    20: { 'accuracy': '7.4192e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.1402e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2924e-01'},
+INFO :    21: { 'accuracy': '7.5928e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.5158e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4465e-01'},
+INFO :    22: { 'accuracy': '7.5903e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.5384e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4432e-01'},
+INFO :    23: { 'accuracy': '7.5920e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.5084e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4551e-01'},
+INFO :    24: { 'accuracy': '7.3844e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.2467e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3158e-01'},
+INFO :    25: { 'accuracy': '7.3842e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.2585e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2805e-01'},
+INFO :    26: { 'accuracy': '7.5682e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.5876e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4415e-01'},
+INFO :    27: { 'accuracy': '7.5943e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.4804e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.5482e-01'},
+INFO :    28: { 'accuracy': '7.4899e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.8333e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.3903e-01'},
+INFO :    29: { 'accuracy': '7.1505e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '1.0064e+01',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.1380e-01'},
+INFO :    30: { 'accuracy': '7.6111e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.4085e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.6415e-01'},
+INFO :    31: { 'accuracy': '7.5803e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.5272e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4871e-01'},
+INFO :    32: { 'accuracy': '7.5277e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.6805e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4386e-01'},
+INFO :    33: { 'accuracy': '7.4884e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.8033e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.5294e-01'},
+INFO :    34: { 'accuracy': '7.2865e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.5504e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2638e-01'},
+INFO :    35: { 'accuracy': '7.2387e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.7129e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2319e-01'},
+INFO :    36: { 'accuracy': '7.3138e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '9.4517e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.2766e-01'},
+INFO :    37: { 'accuracy': '7.5988e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.4142e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.7337e-01'},
+INFO :    38: { 'accuracy': '7.5432e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.6075e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.4878e-01'},
+INFO :    39: { 'accuracy': '7.5800e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.4625e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.5803e-01'},
+INFO :    40: { 'accuracy': '7.5367e-01',
+INFO :          'log-loss-failed': '0.0000e+00',
+INFO :          'loss': '8.6084e+00',
+INFO :          'roc-auc-failed': '0.0000e+00',
+INFO :          'roc_auc': '6.5212e-01'}}
+INFO :
+INFO :  ServerApp-side Evaluate Metrics:
+INFO :  {}
+INFO :
+2026-03-11 16:09:20,437 | INFO | fedlearn.hpo.server_app | Saving final model to /d/school/umich/swe520/git/swe520capstone-agentic-hpo/configs/agentic_hpo.pkl
+(ClientAppActor pid=3012) WARNING :   Manually terminating ClientAppActor
+(ClientAppActor pid=3041) [2026-03-11 15:29:27,094 E 3041 4260] core_worker_process.cc:825: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14 [repeated 15x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)
+(ClientAppActor pid=3041) WARNING :   Manually terminating ClientAppActor [repeated 15x across cluster]

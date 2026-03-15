@@ -102,9 +102,9 @@ class AgenticHPOController:
                 "Treat penalty and learning-rate schedule changes as major changes. "
                 "Prefer adjusting local_epochs or eta0 before changing penalty or schedule. "
                 "Use constant learning rate only when there is clear evidence that the current learning-rate approach is underperforming. "
-                "Set exploit=1 only when you are intentionally keeping or only slightly adjusting a configuration that appears to be working. "
+                "Set exploit=1 only when you are intentionally keeping or only slightly adjusting a configuration that has shown stable or improving performance across multiple recent rounds. "
                 "Set exploit=0 when you are testing a meaningfully different configuration. "
-                "If best_seen is provided, use it as an anchor in later rounds unless there is strong evidence to explore elsewhere. "
+                "If best_seen is provided, use it mainly in later rounds as an anchor unless there is strong evidence to explore elsewhere. "
             ),
             model=self.model,
             model_settings=ModelSettings(temperature=self.temperature),
@@ -171,18 +171,18 @@ class AgenticHPOController:
         summary = self._build_history_summary(recent)
         best_seen = self._best_seen(history)
         explore_phase = server_round <= math.ceil(0.25 * self.total_rounds)
+        late_phase = server_round > math.ceil(0.5 * self.total_rounds)
 
-        rules = (
-            [
+        if explore_phase:
+            rules = [
                 "Exploration phase: moderate experimentation is allowed.",
-                "Prefer changing one dimension at a time.",
-                "Prefer adjusting local_epochs or eta0 before changing penalty or learning-rate schedule.",
-                "Treat penalty and learning-rate schedule changes as major changes.",
-                "Use constant learning rate only when there is clear evidence that the current learning-rate approach is underperforming.",
+                "Prefer changing one major dimension at a time.",
+                "If recent performance is weak, changing learning-rate schedule or penalty is allowed.",
+                "Prefer not to repeat a weak configuration for many rounds in a row.",
                 "If metrics improve strongly, keep similar parameters next round.",
             ]
-            if explore_phase
-            else [
+        else:
+            rules = [
                 "Stabilization phase: prefer keeping the current parameters unless there is strong evidence to change.",
                 "Use history_summary more than any single round.",
                 "If roc_auc improves and loss does not worsen across multiple rounds, keep similar parameters.",
@@ -190,15 +190,18 @@ class AgenticHPOController:
                 "Prefer adjusting local_epochs or eta0 before changing penalty or learning-rate schedule.",
                 "Treat penalty and learning-rate schedule changes as major changes.",
                 "If plateau is true, keep parameters or make only a very small change.",
-                "If best_seen is available and recent rounds do not clearly outperform it, consider staying close to best_seen.hp.",
-                "After a failed exploratory move, prefer returning toward best_seen.hp rather than continuing to drift.",
             ]
-        )
+            if late_phase:
+                rules.extend([
+                    "If best_seen is available and recent rounds do not clearly outperform it, consider staying close to best_seen.hp.",
+                    "After a failed exploratory move, prefer returning toward best_seen.hp rather than continuing to drift.",
+                ])
 
         payload = {
             "objective": {"maximize": "roc_auc", "minimize": "loss"},
             "round": int(server_round),
             "phase": "exploration" if explore_phase else "stabilization",
+            "late_phase": late_phase,
             "search_space": {
                 "local_epochs": [3, 8],
                 "penalty": ALLOWED_PENALTIES,

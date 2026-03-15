@@ -102,7 +102,7 @@ class AgenticHPOController:
                 "Treat penalty and learning-rate schedule changes as major changes. "
                 "Prefer adjusting local_epochs or eta0 before changing penalty or schedule. "
                 "Use constant learning rate only when there is clear evidence that the current learning-rate approach is underperforming. "
-                "Set exploit=1 only when you are intentionally keeping or only slightly adjusting a configuration that has shown stable or improving performance across multiple recent rounds. "
+                "Set exploit=1 only when you are intentionally keeping or only slightly adjusting a configuration that has shown stable or improving performance across multiple recent rounds, and avoid exploit=1 too early in training. "
                 "Set exploit=0 when you are testing a meaningfully different configuration. "
                 "If best_seen is provided, use it mainly in later rounds as an anchor unless there is strong evidence to explore elsewhere. "
             ),
@@ -170,16 +170,18 @@ class AgenticHPOController:
         recent = history[-self.max_history_rounds:]
         summary = self._build_history_summary(recent)
         best_seen = self._best_seen(history)
-        explore_phase = server_round <= math.ceil(0.25 * self.total_rounds)
-        late_phase = server_round > math.ceil(0.5 * self.total_rounds)
+        explore_phase = server_round <= math.ceil(0.50 * self.total_rounds)
+        late_phase = server_round > math.ceil(0.75 * self.total_rounds)
+        force_explore = server_round <= math.ceil(0.25 * self.total_rounds)
 
         if explore_phase:
             rules = [
                 "Exploration phase: moderate experimentation is allowed.",
-                "Prefer changing one major dimension at a time.",
+                "In early exploration rounds, testing meaningfully different configurations is encouraged, even if multiple hyperparameters change.",
                 "If recent performance is weak, changing learning-rate schedule or penalty is allowed.",
-                "Prefer not to repeat a weak configuration for many rounds in a row.",
-                "If metrics improve strongly, keep similar parameters next round.",
+                "Do not keep repeating the same weak configuration for many rounds in a row.",
+                "If the current configuration has not improved roc_auc over the last two rounds, try a meaningfully different configuration in at least one major dimension next.",
+                "In early rounds, prefer exploit=0 unless performance has improved clearly across multiple rounds.",
             ]
         else:
             rules = [
@@ -202,6 +204,7 @@ class AgenticHPOController:
             "round": int(server_round),
             "phase": "exploration" if explore_phase else "stabilization",
             "late_phase": late_phase,
+            "force_explore": force_explore,
             "search_space": {
                 "local_epochs": [3, 8],
                 "penalty": ALLOWED_PENALTIES,
@@ -243,6 +246,9 @@ class AgenticHPOController:
 
             if not isinstance(proposal, AgenticHPOProposal):
                 raise TypeError(f"Unexpected output type: {type(proposal)}")
+
+            if force_explore:
+                proposal.exploit = 0
 
             self._exploit_by_round[int(server_round)] = int(proposal.exploit)
 
@@ -383,4 +389,21 @@ class AgenticFedAvg(FedAvg):
         }
 
         self._history.append(rec)
+
+        best_round = max(self._history, key=lambda r: r["metrics"].get("roc_auc", float("-inf")))
+        best_auc = best_round["metrics"].get("roc_auc")
+        current_auc = rec["metrics"].get("roc_auc")
+
+        if current_auc is not None and best_auc is not None:
+            logger.info(
+                "[agentic_hpo] round=%d auc=%.6f best_auc=%.6f best_round=%d hp={epochs=%d lr=%s eta0=%.6f}",
+                rnd,
+                current_auc,
+                best_auc,
+                best_round["round"],
+                hp.local_epochs,
+                hp.sgd_learning_rate,
+                hp.sgd_eta0_cfg,
+            )
+
         return mrec

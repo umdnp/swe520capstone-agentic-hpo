@@ -142,14 +142,14 @@ class StaticHPORunner:
 
     @staticmethod
     def _suggest_hparams(trial: optuna.trial.BaseTrial, base: HParams) -> HParams:
-        local_epochs = trial.suggest_int(HP_LOCAL_EPOCHS, 1, 10)
+        local_epochs = trial.suggest_int(HP_LOCAL_EPOCHS, 3, 8)
         penalty = trial.suggest_categorical(HP_PENALTY, ["l2", "l1", "elasticnet"])
         lr_sched = trial.suggest_categorical(
             HP_LR_SCHEDULE, ["optimal", "constant", "adaptive"]
         )
 
         eta0 = (
-            float(trial.suggest_float(HP_ETA0, 1e-4, 2e-2, log=True))
+            float(trial.suggest_float(HP_ETA0, 1e-4, 1e-2, log=True))
             if lr_sched in ("constant", "adaptive")
             else 0.0
         )

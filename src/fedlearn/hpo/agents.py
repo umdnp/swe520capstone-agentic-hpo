@@ -51,18 +51,18 @@ class AgenticHPOProposal(BaseModel):
     """
     Structured agent output for next-round federated hyperparameters.
     """
-    local_epochs: int = Field(ge=1, le=10)
+    local_epochs: int = Field(ge=3, le=8)
     penalty: Penalty
     sgd_learning_rate: Schedule
-    sgd_eta0: float = Field(ge=0.0, le=2e-2)
+    sgd_eta0: float = Field(ge=0.0, le=1e-2)
     exploit: Literal[0, 1]
 
     @model_validator(mode="after")
     def validate_eta0(self) -> "AgenticHPOProposal":
         if self.sgd_learning_rate == "optimal":
             self.sgd_eta0 = 0.0
-        elif not (1e-4 <= self.sgd_eta0 <= 2e-2):
-            raise ValueError("sgd_eta0 must be in [1e-4, 2e-2] for constant/adaptive.")
+        elif not (1e-4 <= self.sgd_eta0 <= 1e-2):
+            raise ValueError("sgd_eta0 must be in [1e-4, 1e-2] for constant/adaptive.")
         return self
 
 
@@ -99,7 +99,12 @@ class AgenticHPOController:
                 "Goal: maximize roc_auc while keeping loss low and training stable. "
                 "Do not overreact to one noisy round. "
                 "Early rounds may explore more. Later rounds should prefer smaller, conservative changes. "
-                "Avoid changing multiple major hyperparameters at once unless performance has clearly worsened."
+                "Treat changes to penalty and learning-rate schedule as major changes. "
+                "Prefer adjusting local_epochs or eta0 before changing penalty or schedule. "
+                "Use constant learning rate only when there is clear evidence that the current learning-rate approach is underperforming. "
+                "Avoid changing multiple major hyperparameters at once unless performance has clearly worsened for multiple rounds. "
+                "Set exploit=1 only when you are intentionally keeping or only slightly adjusting a configuration that appears to be working. "
+                "Set exploit=0 when you are testing a meaningfully different configuration. "
             ),
             model=self.model,
             model_settings=ModelSettings(temperature=self.temperature),
@@ -159,17 +164,24 @@ class AgenticHPOController:
         rules = (
             [
                 "Exploration phase: moderate experimentation is allowed.",
-                "Consider changing local_epochs as well as learning-rate settings.",
-                "Still avoid changing multiple major hyperparameters at once.",
+                "Prefer changing one dimension at a time.",
+                "Prefer adjusting local_epochs or eta0 before changing penalty or learning-rate schedule.",
+                "Treat penalty and learning-rate schedule changes as major changes.",
+                "Use constant learning rate only when there is clear evidence that the current schedule is underperforming.",
                 "If metrics improve strongly, keep similar parameters next round.",
+                "Use exploit=0 when testing a meaningfully different configuration.",
             ]
             if explore_phase
             else [
-                "Stabilization phase: prefer small changes.",
+                "Stabilization phase: prefer keeping the current parameters unless there is strong evidence to change.",
                 "Use history_summary more than any single round.",
-                "If roc_auc improves and loss decreases across multiple rounds, keep similar parameters.",
-                "If metrics stall or worsen for multiple rounds, change one dimension at a time.",
+                "If roc_auc improves and loss does not worsen across multiple rounds, keep similar parameters.",
+                "If metrics stall or worsen for multiple rounds, change only one dimension at a time.",
+                "Prefer adjusting local_epochs or eta0 before changing penalty or learning-rate schedule.",
+                "Treat penalty and learning-rate schedule changes as major changes.",
+                "Use constant learning rate only when there is clear evidence that the current schedule is underperforming.",
                 "If plateau is true, keep parameters or make only a very small change.",
+                "Use exploit=1 only when keeping or slightly adjusting a configuration that appears to be working.",
             ]
         )
 
@@ -178,13 +190,13 @@ class AgenticHPOController:
             "round": int(server_round),
             "phase": "exploration" if explore_phase else "stabilization",
             "search_space": {
-                "local_epochs": [1, 10],
+                "local_epochs": [3, 8],
                 "penalty": ALLOWED_PENALTIES,
                 "sgd_learning_rate": ALLOWED_SCHEDULES,
-                "sgd_eta0": "if constant/adaptive: [1e-4, 2e-2]; if optimal: 0.0",
+                "sgd_eta0": "if constant/adaptive: [1e-4, 1e-2]; if optimal: 0.0",
                 "exploit": [0, 1],
             },
-            "base_hp": {
+            "current_hp": {
                 "local_epochs": base_hp.local_epochs,
                 "penalty": base_hp.penalty,
                 "class_weight_cfg": base_hp.class_weight_cfg,
@@ -248,11 +260,11 @@ class AgenticFedAvg(FedAvg):
         return self._hp_by_round.get(server_round - 1, self.seed_hp)
 
     def configure_train(
-        self,
-        server_round: int,
-        arrays: ArrayRecord,
-        config: ConfigRecord,
-        grid: Grid,
+            self,
+            server_round: int,
+            arrays: ArrayRecord,
+            config: ConfigRecord,
+            grid: Grid,
     ) -> Iterable[Message]:
         """
         Choose next-round hyperparameters and update the training config.
@@ -297,11 +309,11 @@ class AgenticFedAvg(FedAvg):
         return super().configure_train(server_round, arrays, config, grid)
 
     def configure_evaluate(
-        self,
-        server_round: int,
-        arrays: ArrayRecord,
-        config: ConfigRecord,
-        grid: Grid,
+            self,
+            server_round: int,
+            arrays: ArrayRecord,
+            config: ConfigRecord,
+            grid: Grid,
     ) -> Iterable[Message]:
         """
         Ensure evaluation uses the same per-round config as training.
@@ -320,9 +332,9 @@ class AgenticFedAvg(FedAvg):
         return super().configure_evaluate(server_round, arrays, config, grid)
 
     def aggregate_evaluate(
-        self,
-        server_round: int,
-        replies: Iterable[Message],
+            self,
+            server_round: int,
+            replies: Iterable[Message],
     ) -> MetricRecord | None:
         """
         Aggregate evaluation replies and record aggregated metrics for agent history.

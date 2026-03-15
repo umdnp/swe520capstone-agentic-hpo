@@ -1,6 +1,9 @@
 [superlink]
-default = "local-simulation"
+default = "local-deployment"
 
-# how many simulated clients
-[superlink.local-simulation]
-options.num-supernodes = 3
+[superlink.local-deployment]
+address = "127.0.0.1:9093"
+insecure = true
+
+[superlink.supergrid]
+address = "supergrid.flower.ai"

@@ -279,6 +279,9 @@ class AgenticFedAvg(FedAvg):
         self.controller = controller
         self._hp_by_round: dict[int, HParams] = {}
         self._history: list[dict[str, Any]] = []
+        self._best_hp: HParams = seed_hp
+        self._best_score: float = float("-inf")
+        self._best_round: int = 0
 
     def _base_hp_for_round(self, server_round: int) -> HParams:
         """
@@ -287,6 +290,15 @@ class AgenticFedAvg(FedAvg):
         if server_round <= 1:
             return self.seed_hp
         return self._hp_by_round.get(server_round - 1, self.seed_hp)
+
+    def get_best_hp(self) -> HParams:
+        return self._best_hp
+
+    def get_best_score(self) -> float:
+        return self._best_score
+
+    def get_best_round(self) -> int:
+        return self._best_round
 
     def configure_train(
             self,
@@ -393,6 +405,7 @@ class AgenticFedAvg(FedAvg):
         best_round = max(self._history, key=lambda r: r["metrics"].get("roc_auc", float("-inf")))
         best_auc = best_round["metrics"].get("roc_auc")
         current_auc = rec["metrics"].get("roc_auc")
+        current_loss = rec["metrics"].get("loss")
 
         if current_auc is not None and best_auc is not None:
             logger.info(
@@ -406,5 +419,15 @@ class AgenticFedAvg(FedAvg):
                 hp.sgd_learning_rate,
                 hp.sgd_eta0_cfg,
             )
+
+        score = None
+        if current_auc is not None:
+            loss_term = current_loss if isinstance(current_loss, (int, float)) else 0.0
+            score = current_auc - 0.02 * loss_term
+
+        if score is not None and score > self._best_score:
+            self._best_score = score
+            self._best_hp = hp
+            self._best_round = rnd
 
         return mrec

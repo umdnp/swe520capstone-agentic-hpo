@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import Iterable
 from typing import Protocol
 
 import optuna
 from flwr.app import ArrayRecord, Context
-from flwr.common import ConfigRecord, Message, MetricRecord
+from flwr.common import ConfigRecord
 from flwr.serverapp import Grid
 from flwr.serverapp.strategy import FedAvg, Result, Strategy
 from sklearn.pipeline import Pipeline
@@ -47,31 +46,6 @@ def _run_fl(
         num_rounds=settings.num_rounds,
     )
     return result, model
-
-
-def _evaluate_final_arrays(
-        *,
-        grid: Grid,
-        arrays: ArrayRecord,
-        settings: ServerSettings,
-        eval_cfg: ConfigRecord,
-) -> Result:
-    """
-    Run a final evaluation-only pass using already-trained global arrays.
-    """
-    strategy = EvalOnlyFedAvg(
-        fraction_train=settings.fraction_train,
-        fraction_evaluate=settings.fraction_evaluate,
-    )
-
-    result = strategy.start(
-        grid=grid,
-        initial_arrays=arrays,
-        train_config=ConfigRecord(),
-        evaluate_config=eval_cfg,
-        num_rounds=1,
-    )
-    return result
 
 
 class ExperimentRunner(Protocol):
@@ -243,40 +217,25 @@ class StaticHPORunner:
         )
 
 
-class EvalOnlyFedAvg(FedAvg):
-    """
-    Strategy that skips training and performs exactly one federated evaluation round.
-    """
-
-    def configure_train(
-            self,
-            server_round: int,
-            arrays: ArrayRecord,
-            config: ConfigRecord,
-            grid: Grid,
-    ) -> Iterable[Message]:
-        return []
-
-    def aggregate_train(
-            self,
-            server_round: int,
-            replies: Iterable[Message],
-    ) -> tuple[ArrayRecord | None, MetricRecord | None]:
-        return None, None
-
-
 class AgenticHPORunner:
     """
     Federated training with agent-controlled hyperparameters.
 
-    Training rounds use VALIDATION for control. After training completes, a final one-shot
-    TEST evaluation is run on the learned global model without additional training.
+    Phase 1:
+        Adaptive search on TRAIN / VALIDATION
+
+    Phase 2:
+        Retrain fixed best hyperparameters on TRAIN_VAL
+
+    Final:
+        Evaluate on TEST
     """
 
     def run(self, grid: Grid, context: Context) -> tuple[Result, Pipeline]:
         settings = get_server_settings(context)
         seed_hp = HParams.from_run_config(context)
-        seed_cfg = seed_hp.to_config(
+
+        search_cfg = seed_hp.to_config(
             train_split=DataSplit.TRAIN,
             eval_split=DataSplit.VALIDATION,
         )
@@ -286,45 +245,53 @@ class AgenticHPORunner:
         temperature = float(rc.get("agent-temperature", 0.2))
         total_rounds = int(rc.get("num-server-rounds", 20))
 
-        controller = AgenticHPOController(
-            model=model,
-            temperature=temperature,
-            total_rounds=total_rounds,
-        )
-
         strategy = AgenticFedAvg(
             seed_hp=seed_hp,
-            controller=controller,
+            controller=AgenticHPOController(
+                model=model,
+                temperature=temperature,
+                total_rounds=total_rounds,
+            ),
             fraction_train=settings.fraction_train,
             fraction_evaluate=settings.fraction_evaluate,
         )
 
-        train_result, model_pipeline = _run_fl(
+        _, _ = _run_fl(
             strategy=strategy,
             grid=grid,
             hp=seed_hp,
             settings=settings,
-            train_cfg=seed_cfg,
-            eval_cfg=seed_cfg,
+            train_cfg=search_cfg,
+            eval_cfg=search_cfg,
         )
 
-        if train_result.arrays is None:
-            raise RuntimeError("Agentic run completed without final arrays.")
+        best_hp = strategy.get_best_hp()
 
-        # one-shot final TEST evaluation using the learned global model
-        final_test_cfg = seed_hp.to_config(
-            train_split=DataSplit.TRAIN,
+        logger.info(
+            "[agentic_hpo] selected_best_hp from search: round=%d score=%.6f hp={epochs=%d penalty=%s lr=%s eta0=%.6f}",
+            strategy.get_best_round(),
+            strategy.get_best_score(),
+            best_hp.local_epochs,
+            best_hp.penalty,
+            best_hp.sgd_learning_rate,
+            best_hp.sgd_eta0_cfg,
+        )
+
+        final_cfg = best_hp.to_config(
+            train_split=DataSplit.TRAIN_VAL,
             eval_split=DataSplit.TEST,
         )
 
-        test_result = _evaluate_final_arrays(
-            grid=grid,
-            arrays=train_result.arrays,
-            settings=settings,
-            eval_cfg=final_test_cfg,
+        final_strategy = FedAvg(
+            fraction_train=settings.fraction_train,
+            fraction_evaluate=settings.fraction_evaluate,
         )
 
-        # keep the trained global arrays from the agentic run
-        test_result.arrays = train_result.arrays
-
-        return test_result, model_pipeline
+        return _run_fl(
+            strategy=final_strategy,
+            grid=grid,
+            hp=best_hp,
+            settings=settings,
+            train_cfg=final_cfg,
+            eval_cfg=final_cfg,
+        )

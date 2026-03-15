@@ -315,7 +315,7 @@ class AgenticFedAvg(FedAvg):
         prev_loss = last.get("loss")
 
         logger.info(
-            "[agentic_hpo] round=%d exploit=%s prev_auc=%s prev_loss=%s hp={local_epochs=%d penalty=%s lr=%s eta0=%.6g}",
+            "[agentic_hpo] decision: round=%d exploit=%s prev_auc=%s prev_loss=%s hp={epochs=%d penalty=%s lr=%s eta0=%.6g}",
             rnd,
             str(exploit) if exploit is not None else "NA",
             f"{prev_auc:.6f}" if isinstance(prev_auc, (int, float)) else "NA",
@@ -396,12 +396,13 @@ class AgenticFedAvg(FedAvg):
 
         if current_auc is not None and best_auc is not None:
             logger.info(
-                "[agentic_hpo] round=%d auc=%.6f best_auc=%.6f best_round=%d hp={epochs=%d lr=%s eta0=%.6f}",
+                "[agentic_hpo] result: round=%d auc=%.6f best_auc=%.6f best_round=%d hp={epochs=%d penalty=%s lr=%s eta0=%.6f}",
                 rnd,
                 current_auc,
                 best_auc,
                 best_round["round"],
                 hp.local_epochs,
+                hp.penalty,
                 hp.sgd_learning_rate,
                 hp.sgd_eta0_cfg,
             )
